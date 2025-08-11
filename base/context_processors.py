@@ -13,7 +13,6 @@ from django.urls import path, reverse
 from django.utils.translation import gettext_lazy as _
 
 from base.models import Company, TrackLateComeEarlyOut
-from base.urls import urlpatterns
 from employee.models import (
     Employee,
     EmployeeGeneralSetting,
@@ -145,15 +144,6 @@ def update_selected_company(request):
     }
     request.session["selected_company_instance"] = company
     return HttpResponse("<script>window.location.reload();</script>")
-
-
-urlpatterns.append(
-    path(
-        "update-selected-company",
-        update_selected_company,
-        name="update-selected-company",
-    )
-)
 
 
 def white_labelling_company(request):

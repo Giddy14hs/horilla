@@ -43,7 +43,7 @@ from django.utils.html import strip_tags
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.translation import gettext as _
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_http_methods, require_POST
 
 from accessibility.accessibility import ACCESSBILITY_FEATURE
 from accessibility.models import DefaultAccessibility
@@ -189,6 +189,7 @@ from horilla_audit.forms import HistoryTrackingFieldsForm
 from horilla_audit.models import AccountBlockUnblock, AuditTag, HistoryTrackingFields
 from notifications.models import Notification
 from notifications.signals import notify
+from employee.views import birthday
 
 
 def custom404(request):
@@ -3381,7 +3382,7 @@ def rotating_shift_assign_delete(request, obj_id):
         employee_id = rotating_shift_assign_obj.employee_id.id
         rotating_shift_assign_obj.delete()
         messages.success(request, _("Rotating shift assign deleted."))
-    except RotatingShiftAssign.DoesNotExist:
+    except RotatingWorkTypeAssign.DoesNotExist:
         employee_id = None
         messages.error(request, _("Rotating shift assign not found."))
     except ProtectedError:
@@ -7518,3 +7519,37 @@ def protected_media(request, path):
             return redirect("login")
 
     return FileResponse(open(media_path, "rb"))
+
+
+@login_required
+def dashboard_router(request):
+    user = request.user
+    employees = Employee.objects.all()
+    active_employees = employees.filter(is_active=True)
+    inactive_employees = employees.filter(is_active=False)
+    active_ratio = 0
+    inactive_ratio = 0
+    if employees.exists():
+        active_ratio = f"{(len(active_employees) / len(employees)) * 100:.1f}"
+        inactive_ratio = f"{(len(inactive_employees) / len(employees)) * 100:.1f}"
+    context = {
+        "birthdays": birthday(),
+        "active_employees": len(active_employees),
+        "inactive_employees": len(inactive_employees),
+        "total_employees": len(employees),
+        "active_ratio": active_ratio,
+        "inactive_ratio": inactive_ratio,
+    }
+    if user.is_superuser or user.has_perm("employee.add_employee"):
+        return render(request, "admin_dashboard.html", context)
+    else:
+        return render(request, "employee/dashboard/dashboard_employee.html", context)
+
+
+@require_POST
+def update_selected_company(request):
+    # Minimal implementation: update session or handle company selection
+    company_id = request.POST.get('company_id')
+    if company_id:
+        request.session['selected_company'] = company_id
+    return HttpResponse('OK')

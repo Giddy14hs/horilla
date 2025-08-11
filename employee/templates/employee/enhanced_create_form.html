@@ -1,0 +1,455 @@
+{% extends 'index.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<div class="oh-wrapper">
+    <section class="oh-wrapper oh-main__topbar oh-main__topbar--left">
+        <div class="oh-main__titlebar oh-main__titlebar--left">
+            <h1 class="oh-main__titlebar-title fw-bold mb-0">
+                {% trans "Create New User" %}
+            </h1>
+        </div>
+    </section>
+
+    <div class="oh-general__tab-container">
+        <div class="oh-general__tab-target oh-profile-section" id="personal">
+            <div class="oh-profile-section__card">
+                <form method="post" enctype="multipart/form-data" id="enhanced-employee-form">
+                    {% csrf_token %}
+                    
+                    {% if messages %}
+                    <div class="oh-alert-container">
+                        {% for message in messages %}
+                        <div class="oh-alert oh-alert--animated {{message.tags}}">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- User Type Selection -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h4 class="mb-3">{% trans "User Type & Permissions" %}</h4>
+                            <div class="form-group">
+                                <label for="{{ form.user_type.id_for_label }}" class="form-label">
+                                    {{ form.user_type.label }}
+                                </label>
+                                {{ form.user_type }}
+                                {% if form.user_type.help_text %}
+                                <small class="form-text text-muted">{{ form.user_type.help_text }}</small>
+                                {% endif %}
+                                {% if form.user_type.errors %}
+                                <div class="alert alert-danger">{{ form.user_type.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Password Fields -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.password.id_for_label }}" class="form-label">
+                                    {{ form.password.label }}
+                                </label>
+                                {{ form.password }}
+                                {% if form.password.help_text %}
+                                <small class="form-text text-muted">{{ form.password.help_text }}</small>
+                                {% endif %}
+                                {% if form.password.errors %}
+                                <div class="alert alert-danger">{{ form.password.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.confirm_password.id_for_label }}" class="form-label">
+                                    {{ form.confirm_password.label }}
+                                </label>
+                                {{ form.confirm_password }}
+                                {% if form.confirm_password.help_text %}
+                                <small class="form-text text-muted">{{ form.confirm_password.help_text }}</small>
+                                {% endif %}
+                                {% if form.confirm_password.errors %}
+                                <div class="alert alert-danger">{{ form.confirm_password.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Admin Options -->
+                    <div class="row mb-4" id="admin-options" style="display: none;">
+                        <div class="col-12">
+                            <h5>{% trans "Administrator Options" %}</h5>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    {{ form.is_superuser }}
+                                    <label class="form-check-label" for="{{ form.is_superuser.id_for_label }}">
+                                        {{ form.is_superuser.label }}
+                                    </label>
+                                </div>
+                                {% if form.is_superuser.help_text %}
+                                <small class="form-text text-muted">{{ form.is_superuser.help_text }}</small>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="form-group mt-3">
+                                <label for="{{ form.admin_permissions.id_for_label }}" class="form-label">
+                                    {{ form.admin_permissions.label }}
+                                </label>
+                                <div class="permission-checkboxes" style="max-height: 200px; overflow-y: auto;">
+                                    {{ form.admin_permissions }}
+                                </div>
+                                {% if form.admin_permissions.help_text %}
+                                <small class="form-text text-muted">{{ form.admin_permissions.help_text }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Employee Options -->
+                    <div class="row mb-4" id="employee-options" style="display: none;">
+                        <div class="col-12">
+                            <h5>{% trans "Employee Options" %}</h5>
+                            
+                            <div class="form-group">
+                                <label for="{{ form.employee_groups.id_for_label }}" class="form-label">
+                                    {{ form.employee_groups.label }}
+                                </label>
+                                {{ form.employee_groups }}
+                                {% if form.employee_groups.help_text %}
+                                <small class="form-text text-muted">{{ form.employee_groups.help_text }}</small>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="form-group mt-3">
+                                <label for="{{ form.employee_permissions.id_for_label }}" class="form-label">
+                                    {{ form.employee_permissions.label }}
+                                </label>
+                                <div class="permission-checkboxes" style="max-height: 200px; overflow-y: auto;">
+                                    {{ form.employee_permissions }}
+                                </div>
+                                {% if form.employee_permissions.help_text %}
+                                <small class="form-text text-muted">{{ form.employee_permissions.help_text }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personal Information -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h4 class="mb-3">{% trans "Personal Information" %}</h4>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.badge_id.id_for_label }}" class="form-label">
+                                    {{ form.badge_id.label }}
+                                </label>
+                                {{ form.badge_id }}
+                                {% if form.badge_id.errors %}
+                                <div class="alert alert-danger">{{ form.badge_id.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.employee_first_name.id_for_label }}" class="form-label">
+                                    {{ form.employee_first_name.label }}
+                                </label>
+                                {{ form.employee_first_name }}
+                                {% if form.employee_first_name.errors %}
+                                <div class="alert alert-danger">{{ form.employee_first_name.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.employee_last_name.id_for_label }}" class="form-label">
+                                    {{ form.employee_last_name.label }}
+                                </label>
+                                {{ form.employee_last_name }}
+                                {% if form.employee_last_name.errors %}
+                                <div class="alert alert-danger">{{ form.employee_last_name.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.email.id_for_label }}" class="form-label">
+                                    {{ form.email.label }}
+                                </label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                <div class="alert alert-danger">{{ form.email.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.phone.id_for_label }}" class="form-label">
+                                    {{ form.phone.label }}
+                                </label>
+                                {{ form.phone }}
+                                {% if form.phone.errors %}
+                                <div class="alert alert-danger">{{ form.phone.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.dob.id_for_label }}" class="form-label">
+                                    {{ form.dob.label }}
+                                </label>
+                                {{ form.dob }}
+                                {% if form.dob.errors %}
+                                <div class="alert alert-danger">{{ form.dob.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.gender.id_for_label }}" class="form-label">
+                                    {{ form.gender.label }}
+                                </label>
+                                {{ form.gender }}
+                                {% if form.gender.errors %}
+                                <div class="alert alert-danger">{{ form.gender.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.marital_status.id_for_label }}" class="form-label">
+                                    {{ form.marital_status.label }}
+                                </label>
+                                {{ form.marital_status }}
+                                {% if form.marital_status.errors %}
+                                <div class="alert alert-danger">{{ form.marital_status.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="{{ form.address.id_for_label }}" class="form-label">
+                                    {{ form.address.label }}
+                                </label>
+                                {{ form.address }}
+                                {% if form.address.errors %}
+                                <div class="alert alert-danger">{{ form.address.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.city.id_for_label }}" class="form-label">
+                                    {{ form.city.label }}
+                                </label>
+                                {{ form.city }}
+                                {% if form.city.errors %}
+                                <div class="alert alert-danger">{{ form.city.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.zip.id_for_label }}" class="form-label">
+                                    {{ form.zip.label }}
+                                </label>
+                                {{ form.zip }}
+                                {% if form.zip.errors %}
+                                <div class="alert alert-danger">{{ form.zip.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.experience.id_for_label }}" class="form-label">
+                                    {{ form.experience.label }}
+                                </label>
+                                {{ form.experience }}
+                                {% if form.experience.errors %}
+                                <div class="alert alert-danger">{{ form.experience.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.employee_profile.id_for_label }}" class="form-label">
+                                    {{ form.employee_profile.label }}
+                                </label>
+                                {{ form.employee_profile }}
+                                {% if form.employee_profile.errors %}
+                                <div class="alert alert-danger">{{ form.employee_profile.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    {{ form.is_active }}
+                                    <label class="form-check-label" for="{{ form.is_active.id_for_label }}">
+                                        {{ form.is_active.label }}
+                                    </label>
+                                </div>
+                                {% if form.is_active.errors %}
+                                <div class="alert alert-danger">{{ form.is_active.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Work Information -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h4 class="mb-3">{% trans "Work Information" %}</h4>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ work_form.department_id.id_for_label }}" class="form-label">
+                                    {{ work_form.department_id.label }}
+                                </label>
+                                {{ work_form.department_id }}
+                                {% if work_form.department_id.errors %}
+                                <div class="alert alert-danger">{{ work_form.department_id.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ work_form.job_position_id.id_for_label }}" class="form-label">
+                                    {{ work_form.job_position_id.label }}
+                                </label>
+                                {{ work_form.job_position_id }}
+                                {% if work_form.job_position_id.errors %}
+                                <div class="alert alert-danger">{{ work_form.job_position_id.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ work_form.job_role_id.id_for_label }}" class="form-label">
+                                    {{ work_form.job_role_id.label }}
+                                </label>
+                                {{ work_form.job_role_id }}
+                                {% if work_form.job_role_id.errors %}
+                                <div class="alert alert-danger">{{ work_form.job_role_id.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ work_form.company_id.id_for_label }}" class="form-label">
+                                    {{ work_form.company_id.label }}
+                                </label>
+                                {{ work_form.company_id }}
+                                {% if work_form.company_id.errors %}
+                                <div class="alert alert-danger">{{ work_form.company_id.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>{% trans "Create User" %}
+                            </button>
+                            <a href="{% url 'employee-view' %}" class="btn btn-secondary ms-2">
+                                <i class="fas fa-times me-2"></i>{% trans "Cancel" %}
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const userTypeSelect = document.getElementById('{{ form.user_type.id_for_label }}');
+    const adminOptions = document.getElementById('admin-options');
+    const employeeOptions = document.getElementById('employee-options');
+    
+    function toggleOptions() {
+        const selectedValue = userTypeSelect.value;
+        
+        // Hide all options first
+        adminOptions.style.display = 'none';
+        employeeOptions.style.display = 'none';
+        
+        // Show relevant options based on selection
+        if (selectedValue === 'admin') {
+            adminOptions.style.display = 'block';
+        } else if (selectedValue === 'employee') {
+            employeeOptions.style.display = 'block';
+        } else if (selectedValue === 'manager') {
+            // Managers get some admin options but not superuser
+            adminOptions.style.display = 'block';
+            // Hide superuser option for managers
+            const superuserCheckbox = document.getElementById('{{ form.is_superuser.id_for_label }}');
+            if (superuserCheckbox) {
+                superuserCheckbox.parentElement.style.display = 'none';
+            }
+        }
+    }
+    
+    // Initial setup
+    toggleOptions();
+    
+    // Listen for changes
+    userTypeSelect.addEventListener('change', toggleOptions);
+});
+</script>
+
+<style>
+.permission-checkboxes {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.permission-checkboxes label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.alert {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+}
+</style>
+{% endblock content %} 

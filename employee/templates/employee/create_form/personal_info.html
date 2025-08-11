@@ -78,6 +78,10 @@
                   </div>
               </div>
               {{form.as_p}}
+              <div class="form-group">
+                  <label for="id_password">{% trans "Password" %}</label>
+                  {{ form.password }}
+              </div>
               <hr class="mt-5 mb-3 d-flex flex-row-reverse">
               <div class="col-lg-12 d-flex flex-row-reverse">
                 <button type="submit" class="oh-btn oh-btn--secondary">

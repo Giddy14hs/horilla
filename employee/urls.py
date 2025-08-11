@@ -54,6 +54,8 @@ urlpatterns = [
     ),
     path("employee-view/", views.employee_view, name="employee-view"),
     path("employee-view-new", views.employee_view_new, name="employee-view-new"),
+    path("enhanced-employee-create", views.enhanced_employee_create, name="enhanced-employee-create"),
+    path("update-user-permissions/<int:obj_id>/", views.update_user_permissions, name="update-user-permissions"),
     path(
         "employee-view-update/<int:obj_id>/",
         views.employee_view_update,

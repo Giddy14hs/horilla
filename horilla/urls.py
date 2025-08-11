@@ -22,6 +22,7 @@ from django.urls import include, path, re_path
 import notifications.urls
 
 from . import settings
+from base.views import dashboard_router
 
 
 def health_check(request):
@@ -32,6 +33,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
+    path("", dashboard_router, name="dashboard"),
     path("", include("base.urls")),
     path("", include("horilla_automations.urls")),
     path("", include("horilla_views.urls")),

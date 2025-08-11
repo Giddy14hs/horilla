@@ -250,16 +250,6 @@
                                         {% endif %}
                                         {% if perms.employee.change_employee %}
                                             <li class="oh-dropdown__item">
-                                                <a href="#" class="oh-dropdown__link" id="archiveEmployees">
-                                                    {% trans "Archive" %}
-                                                </a>
-                                            </li>
-                                            <li class="oh-dropdown__item">
-                                                <a href="#" class="oh-dropdown__link" id="unArchiveEmployees">
-                                                    {% trans "Un-Archive" %}
-                                                </a>
-                                            </li>
-                                            <li class="oh-dropdown__item">
                                                 <a hx-get="{% url 'employee-bulk-mail' %}" hx-target="#mail-content" href="#"
                                                     class="oh-dropdown__link " data-toggle="oh-modal-toggle"
                                                     data-target="#sendMailModal">
@@ -269,14 +259,6 @@
                                             <li class="oh-dropdown__item">
                                                 <a href="#" class="oh-dropdown__link" id="employeeBulkUpdateId">
                                                     {% trans "Bulk Update" %}
-                                                </a>
-                                            </li>
-                                        {% endif %}
-                                        {% if perms.employee.delete_employee %}
-                                            <li class="oh-dropdown__item">
-                                                <a href="#" class="oh-dropdown__link oh-dropdown__link--danger" data-action="delete"
-                                                    id="deleteEmployees">
-                                                    {% trans "Delete" %}
                                                 </a>
                                             </li>
                                         {% endif %}
@@ -291,7 +273,11 @@
                         <div class="oh-dropdown">
                             <a href='{% url "employee-view-new" %}' class="oh-btn oh-btn--secondary">
                                 <ion-icon name="add-outline"></ion-icon>
-                                {% trans "Create" %}
+                                {% trans "Create Employee" %}
+                            </a>
+                            <a href='{% url "enhanced-employee-create" %}' class="oh-btn oh-btn--primary">
+                                <ion-icon name="person-add-outline"></ion-icon>
+                                {% trans "Create User" %}
                             </a>
                         </div>
                     </div>

@@ -123,18 +123,6 @@
 								>
 							</li>
 
-							<li data-cell-index="19" data-cell-title="{% trans 'Work type & Shift' %}" class="oh-general__tab">
-								<a
-								hx-get="{% url 'shift-tab' employee.id %}?profile=true"
-								hx-target="#shift_target"
-								data-action="general-tab"
-								data-target="#shift_target"
-								class="oh-general__tab-link pointer"
-								role="button"
-								>{% trans "Work Type & Shift" %}</a
-								>
-							</li>
-
 							{% if "attendance"|app_installed %}
 								<li data-cell-index="18" data-cell-title="{% trans 'Attendance' %}" class="oh-general__tab">
 									<a
@@ -192,61 +180,6 @@
 								</li>
 							{% endif %}
 
-							{% if "attendance"|app_installed %}
-							<li data-cell-index="14" data-cell-title="{% trans "Penalty Account" %}" class="oh-general__tab">
-								<a
-								data-action="general-tab"
-								data-target="#penaltyTarget"
-								id="penalty"
-								class="oh-general__tab-link"
-								role="button"
-								>{% trans "Penalty Account" %}</a
-								>
-							</li>
-							{% endif %}
-
-							{% if "asset"|app_installed %}
-								<li data-cell-index="13" data-cell-title="{% trans 'Assets' %}" class="oh-general__tab">
-									<a
-									hx-get="{% url 'profile-asset-tab' employee.id %}"
-									hx-target="#asset_target"
-									data-action="general-tab"
-									data-target="#asset_target"
-									id="asset"
-									class="oh-general__tab-link pointer"
-									role="button"
-									>{% trans "Assets" %}</a
-									>
-								</li>
-							{% endif %}
-
-							{% if "pms"|app_installed %}
-							<li data-cell-index="12" data-cell-title="{% trans 'Performance' %}" class="oh-general__tab">
-								<a
-								hx-get="{% url 'performance-tab' employee.id %}"
-								hx-target="#performance_target"
-								data-action="general-tab"
-								data-target="#performance_target"
-								id="asset"
-								class="oh-general__tab-link"
-								role="button"
-								>{% trans "Performance" %}</a
-								>
-							</li>
-							{% endif %}
-
-							<li data-cell-index="11" data-cell-title="{% trans 'Documents' %}" class="oh-general__tab">
-								<a
-								hx-get="{% url 'document-tab' employee.id %}?employee_view=true"
-								hx-target="#document_target"
-								data-action="general-tab"
-								data-target="#document_target"
-								class="oh-general__tab-link"
-								role="button"
-								>{% trans "Documents" %}</a
-								>
-							</li>
-
 							{% if "payroll"|app_installed %}
 							<li data-cell-index="10" data-cell-title="{% trans 'Bonus Points' %}" class="oh-general__tab">
 								<a
@@ -292,12 +225,6 @@
 						</ul>
 
 						<div class="oh-general__tab-target oh-profile__info-tab mb-4" id="personal_target" > </div>
-
-						{% if "attendance"|app_installed %}
-							<div class="oh-general__tab-target oh-profile__info-tab mb-4" id="penaltyTarget">
-								{% include 'tabs/penalty_account.html' %}
-							</div>
-						{% endif %}
 
 						{% if "payroll"|app_installed %}
 							<div class="oh-general__tab-target oh-profile__info-tab mb-4 d-none" id="payroll">

@@ -198,50 +198,8 @@
                             title="{% trans 'Edit' %}"
                             ><ion-icon name="create-outline"></ion-icon
                           ></a>
-                          {% endif %} {% if perms.employee.delete_employee %} {% if emp.is_active %}
-                            <form hx-confirm="{% trans 'Do you want to archive this employee?' %}"
-                                  hx-post="{% url 'employee-archive' emp.id %}"
-                                  hx-target="#relatedModel"
-                                  style = "width:100%"
-                              >
-                              {% csrf_token %}
-                              <button
-                                type="submit"
-                                class="oh-btn oh-btn--danger-outline oh-btn--light-bkg w-100"
-                                title="{% trans 'Archive' %}"
-                                >
-                                <ion-icon name="archive"></ion-icon>
-                              </button>
-                            </form>
-                          {% else %}
-                            <form hx-confirm="{% trans 'Do you want to un-archive this employee?' %}"
-                                hx-post="{% url 'employee-archive' emp.id %}"
-                                hx-target="#relatedModel"
-                                style = "width:100%"
-                              >
-                              {% csrf_token %}
-                              <button
-                                type="submit"
-                                class="oh-btn oh-btn--danger-outline oh-btn--light-bkg w-100"
-                                title="{% trans 'Un-Archive' %}"
-                              >
-                                <ion-icon name="archive"></ion-icon>
-                            </button>
-                            </form>
-                          {% endif %} {% endif %} {% if perms.employee.delete_employee %}
-                          <form
-                            action="{% url 'employee-delete' emp.id %}?view=list"
-                            onsubmit="return confirm('{% trans "Are you sure want to delete this employee?" %}')"
-                            method="post" style = "width:100%"
-                          > {% csrf_token %}
-                            <button
-                              type="submit"
-                              class="oh-btn oh-btn--danger-outline oh-btn--light-bkg w-100"
-                              title="{% trans 'Remove' %}"
-                            >
-                              <ion-icon name="trash-outline"></ion-icon>
-                            </button>
-                          </form>
+                          {% endif %} {% if perms.employee.delete_employee %}
+                          {# Archive and Delete actions removed #}
                           {% endif %}
                         </div>
                       </div>

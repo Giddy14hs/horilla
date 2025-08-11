@@ -199,8 +199,6 @@ def manager_can_enter(function, perm):
 
 @decorator_with_arguments
 def is_recruitment_manager(function, perm):
-    from recruitment.models import Recruitment
-
     """
     This method is used to check permission to employee for enter to the function if the employee
     do not have permission also checks, has manager of any recruitment.

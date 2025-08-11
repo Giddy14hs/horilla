@@ -39,6 +39,8 @@ def sidebar(request):
         MENUS = request.MENUS
 
         for app in base_dir_apps:
+            if app in ["recruitment", "onboarding", "payroll", "asset"]:
+                continue
             if apps.is_installed(app):
                 try:
                     sidebar = importlib.import_module(app + ".sidebar")

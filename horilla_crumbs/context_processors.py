@@ -321,25 +321,21 @@ def breadcrumbs(request):
     return {"breadcrumbs": request.session["breadcrumbs"]}
 
 
-urlpatterns.append(
-    path("recruitment/", lambda request: redirect("recruitment-dashboard"))
-)
-urlpatterns.append(
-    path("onboarding/", lambda request: redirect("view-onboarding-dashboard"))
-)
-urlpatterns.append(path("employee/", lambda request: redirect("employee-view")))
-urlpatterns.append(
-    path("attendance/", lambda request: redirect("attendance-dashboard"))
-)
-urlpatterns.append(
-    path(
-        "leave/",
-        lambda request: redirect(
-            reverse("leave-employee-dashboard") + "?dashboard=true"
-        ),
+# Remove recruitment, onboarding, payroll, and asset URLs from sidebar_urls and urlpatterns
+sidebar_urls = [
+    url for url in sidebar_urls if url not in [
+        "pipeline", "recruitment-survey-question-template-view", "candidate-view", "recruitment-view", "stage-view", "view-onboarding-dashboard", "onboarding-view", "candidates-view", "view-payroll-dashboard", "view-contract", "view-allowance", "view-deduction", "view-payslip", "filing-status-view", "asset-category-view", "asset-request-allocation-view"
+    ]
+]
+
+# Remove urlpatterns for deleted apps
+urlpatterns = [
+    p for p in urlpatterns if not (
+        hasattr(p, 'callback') and (
+            getattr(p.callback, '__name__', '').startswith('recruitment') or
+            getattr(p.callback, '__name__', '').startswith('onboarding') or
+            getattr(p.callback, '__name__', '').startswith('payroll') or
+            getattr(p.callback, '__name__', '').startswith('asset')
+        )
     )
-)
-urlpatterns.append(path("payroll/", lambda request: redirect("view-payroll-dashboard")))
-urlpatterns.append(path("pms/", lambda request: redirect("dashboard-view")))
-urlpatterns.append(path("asset/", lambda request: redirect("asset-dashboard")))
-urlpatterns.append(path("project/", lambda request: redirect("project-dashboard-view")))
+]

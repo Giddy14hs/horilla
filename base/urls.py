@@ -33,6 +33,7 @@ from base.models import (
     WorkTypeRequest,
 )
 from horilla_audit.models import AuditTag
+from base.views import update_selected_company
 
 urlpatterns = [
     path("", views.home, name="home-page"),
@@ -1075,3 +1076,7 @@ urlpatterns = [
 urlpatterns.append(
     re_path(r"^media/(?P<path>.*)$", views.protected_media, name="protected_media"),
 )
+
+urlpatterns += [
+    path("update-selected-company", update_selected_company, name="update-selected-company"),
+]

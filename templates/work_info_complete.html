@@ -83,7 +83,7 @@
     {% endif %}
     {% if employees_with_pending.has_next or employees_with_pending.has_previous %}
     <span class="oh-pagination__page float-end fw-bold">
-        {% trans "Page" %} {{ employees_with_pending.number }} {%trans "of" %}
+        {% trans "Page" %} {{ employees_with_pending.number }} {% trans "of" %}
         {{employees_with_pending.paginator.num_pages }}
     </span>
     {% endif %}

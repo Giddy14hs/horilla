@@ -214,62 +214,6 @@
 						</li>
 						<hr>
 						{% if "recruitment"|app_installed %}
-						<li class="oh-inner-sidebar__item">
-							<div class="oh-accordion ms-2">
-								<div class="oh-accordion-header" style="font-size:16px;">
-									<ion-icon name="clipboard-outline" class="me-2"></ion-icon>
-									{% trans "Recruitment" %}
-								</div>
-									<div class="oh-accordion-body">
-										<div class="row">
-										<div class="col-sm-12 col-md-12 col-lg-12">
-											<div class="oh-input-group">
-												{% if perms.recruitment.view_recruitment %}
-												<div class="oh-input-group">
-													<a
-														id="skills"
-														href="{% url 'self-tracking-feature' %}"
-														class="oh-inner-sidebar__link oh-dropdown__link"
-													>{% trans "Candidate Self Tracking" %}</a
-													>
-												</div>
-												{% endif %}
-												{% if perms.recruitment.view_rejectreason %}
-													<a
-														id="candidateRejectReasons"
-														href="{% url 'candidate-reject-reasons' %}"
-														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Candidate Reject Reason" %}</a
-													>
-												{% endif %}
-											</div>
-											<div class="oh-input-group">
-												{% if perms.recruitment.add_recruitment %}
-													<a
-														id="skills"
-														href="{% url 'skills-view' %}"
-														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Skills" %}</a
-													>
-												{% endif %}
-											</div>
-											<div class="oh-input-group">
-												{% comment %} {% if perms.recruitment.add_recruitment %} {% endcomment %}
-													<a
-														id="skills"
-														href="{% url 'linkedin-integration-setting' %}"
-														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Linkedin Integration" %}</a
-													>
-												{% comment %} {% endif %} {% endcomment %}
-											</div>
-
-										</div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<hr>
 						{% endif %}
 
 						<li class="oh-inner-sidebar__item">
@@ -502,31 +446,6 @@
 							<hr>
 						{% endif %}
 						{% if "payroll"|app_installed %}
-							<li class="oh-inner-sidebar__item">
-								<div class="oh-accordion ms-2">
-									<div class="oh-accordion-header" style="font-size:16px;">
-										<ion-icon name="wallet-outline" class="me-2"></ion-icon>
-										{% trans "Payroll" %}
-									</div>
-										<div class="oh-accordion-body">
-											<div class="row">
-											<div class="col-sm-12 col-md-12 col-lg-12">
-												<div class="oh-input-group">
-													{% if perms.payroll.view_payslipautogenerate %}
-														<a
-															id="autoGeneratePayslip"
-															href="{% url 'auto-payslip-settings-view' %}"
-															class="oh-inner-sidebar__link oh-dropdown__link"
-															>{% trans "Payslip Auto Generation" %}</a
-														>
-													{% endif %}
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</li>
-							<hr>
 						{% endif %}
 						{% if "pms"|app_installed %}
 							<li class="oh-inner-sidebar__item">

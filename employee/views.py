@@ -64,7 +64,6 @@ from base.models import (
     ShiftRequest,
     WorkTypeRequest,
 )
-from base.views import generate_error_report
 from employee.filters import DocumentRequestFilter, EmployeeFilter, EmployeeReGroup
 from employee.forms import (
     BonusPointAddForm,
@@ -128,6 +127,7 @@ from horilla_documents.forms import (
 )
 from horilla_documents.models import Document, DocumentRequest
 from notifications.signals import notify
+from django.contrib.auth.models import Permission
 
 
 def return_none(a, b):
@@ -1372,17 +1372,32 @@ def employee_account_block_unblock(request, emp_id):
 @login_required
 @permission_required("employee.add_employee")
 def employee_view_new(request):
-    """
-    This method is used to render form to create a new employee.
-    """
     form = EmployeeForm()
     work_form = EmployeeWorkInformationForm()
-    bank_form = EmployeeBankDetailsForm()
     filter_obj = EmployeeFilter(queryset=Employee.objects.all())
+    if request.method == "POST":
+        form = EmployeeForm(request.POST, request.FILES)
+        work_form = EmployeeWorkInformationForm(request.POST)
+        if form.is_valid() and work_form.is_valid():
+            employee = form.save(commit=False)
+            password = form.cleaned_data.get("password")
+            # Create the user
+            user = User.objects.create_user(
+                username=form.cleaned_data["email"],
+                email=form.cleaned_data["email"],
+                password=password or form.cleaned_data["phone"],
+            )
+            employee.employee_user_id = user
+            employee.save()
+            work_info = work_form.save(commit=False)
+            work_info.employee_id = employee
+            work_info.save()
+            messages.success(request, _("Employee created successfully."))
+            return redirect("employee-view-update", obj_id=employee.id)
     return render(
         request,
         "employee/create_form/form_view.html",
-        {"form": form, "work_form": work_form, "bank_form": bank_form, "f": filter_obj},
+        {"form": form, "work_form": work_form, "f": filter_obj},
     )
 
 
@@ -1439,9 +1454,6 @@ def employee_view_update(request, obj_id, **kwargs):
                 employee_id=employee
             ).first()
         )
-        bank_form = EmployeeBankDetailsForm(
-            instance=EmployeeBankDetails.objects.filter(employee_id=employee).first()
-        )
         if request.POST:
             if request.POST.get("form") == "personal":
                 form = EmployeeForm(request.POST, instance=employee)
@@ -1479,18 +1491,6 @@ def employee_view_update(request, obj_id, **kwargs):
                         employee_id=employee
                     ).first()
                 )
-            elif request.POST.get("form") == "bank":
-                instance = EmployeeBankDetails.objects.filter(
-                    employee_id=employee
-                ).first()
-                bank_form = EmployeeBankDetailsUpdateForm(
-                    request.POST, instance=instance
-                )
-                if bank_form.is_valid():
-                    instance = bank_form.save(commit=False)
-                    instance.employee_id = employee
-                    instance.save()
-                    messages.success(request, _("Employee bank details updated."))
         return render(
             request,
             "employee/update_form/form_view.html",
@@ -1498,7 +1498,6 @@ def employee_view_update(request, obj_id, **kwargs):
                 "obj_id": obj_id,
                 "form": form,
                 "work_form": work_form,
-                "bank_form": bank_form,
                 "work_info_history": work_info_history,
             },
         )
@@ -2439,6 +2438,9 @@ def employee_import(request):
                     employee.save()
             except Exception:
                 error_list.append(employee_dict)
+        if error_list:
+            from base.views import generate_error_report
+            path_info = generate_error_report(error_list, error_data_template, "EmployeesImportError.xlsx")
         return HttpResponse(
             """
     <div class='alert-success p-3 border-rounded'>
@@ -3613,4 +3615,138 @@ def employee_tag_update(request, tag_id):
         request,
         "base/employee_tag/employee_tag_form.html",
         {"form": form, "tag_id": tag_id},
+    )
+
+
+@login_required
+@permission_required("employee.add_employee")
+def enhanced_employee_create(request):
+    """
+    Enhanced employee creation view that allows creating different types of users
+    """
+    if request.method == "POST":
+        form = EnhancedUserCreationForm(request.POST, request.FILES)
+        work_form = EmployeeWorkInformationForm(request.POST)
+        
+        if form.is_valid() and work_form.is_valid():
+            try:
+                # Create the employee with user
+                employee = form.save()
+                
+                # Create work information
+                work_info = work_form.save(commit=False)
+                work_info.employee_id = employee
+                work_info.save()
+                
+                user_type = form.cleaned_data.get('user_type')
+                messages.success(
+                    request, 
+                    _(f"{user_type.title()} created successfully with appropriate permissions.")
+                )
+                
+                return redirect("employee-view-update", obj_id=employee.id)
+                
+            except Exception as e:
+                messages.error(request, _(f"Error creating user: {str(e)}"))
+                return render(
+                    request,
+                    "employee/enhanced_create_form.html",
+                    {"form": form, "work_form": work_form}
+                )
+    else:
+        form = EnhancedUserCreationForm()
+        work_form = EmployeeWorkInformationForm()
+    
+    return render(
+        request,
+        "employee/enhanced_create_form.html",
+        {"form": form, "work_form": work_form}
+    )
+
+
+@login_required
+@permission_required("employee.change_employee")
+def update_user_permissions(request, obj_id):
+    """
+    Update user permissions for existing employees
+    """
+    employee = Employee.objects.filter(id=obj_id).first()
+    if not employee or not employee.employee_user_id:
+        messages.error(request, _("Employee not found or has no associated user."))
+        return redirect("employee-view")
+    
+    user = employee.employee_user_id
+    
+    if request.method == "POST":
+        form = EnhancedUserCreationForm(request.POST, instance=employee)
+        if form.is_valid():
+            # Update user permissions based on form data
+            user_type = form.cleaned_data.get('user_type')
+            is_superuser = form.cleaned_data.get('is_superuser', False)
+            
+            # Update user properties
+            user.is_superuser = is_superuser
+            user.is_staff = user_type in ['admin', 'manager']
+            user.save()
+            
+            # Clear existing permissions
+            user.user_permissions.clear()
+            user.groups.clear()
+            
+            # Assign new permissions based on user type
+            if user_type == 'admin':
+                admin_permissions = form.cleaned_data.get('admin_permissions', [])
+                if admin_permissions:
+                    permissions = Permission.objects.filter(codename__in=admin_permissions)
+                    user.user_permissions.set(permissions)
+                    
+            elif user_type == 'manager':
+                manager_permissions = [
+                    'view_employee', 'change_employee', 'add_employee',
+                    'view_attendance', 'change_attendance',
+                    'view_leave', 'change_leave',
+                    'view_pms', 'change_pms',
+                ]
+                permissions = Permission.objects.filter(codename__in=manager_permissions)
+                user.user_permissions.set(permissions)
+                
+            else:  # employee
+                employee_permissions = form.cleaned_data.get('employee_permissions', [])
+                if employee_permissions:
+                    permissions = Permission.objects.filter(codename__in=employee_permissions)
+                    user.user_permissions.set(permissions)
+                
+                employee_groups = form.cleaned_data.get('employee_groups', [])
+                if employee_groups:
+                    user.groups.set(employee_groups)
+                
+                # Default employee permissions
+                default_employee_permissions = [
+                    'view_ownprofile', 'change_ownprofile',
+                    'view_attendance', 'add_attendance',
+                    'view_leave', 'add_leave',
+                ]
+                default_permissions = Permission.objects.filter(codename__in=default_employee_permissions)
+                user.user_permissions.add(*default_permissions)
+            
+            messages.success(request, _(f"User permissions updated successfully for {user_type}."))
+            return redirect("employee-view-update", obj_id=employee.id)
+    else:
+        # Pre-populate form with current user data
+        initial_data = {
+            'user_type': 'employee',  # Default
+            'is_superuser': user.is_superuser,
+        }
+        
+        if user.is_superuser:
+            initial_data['user_type'] = 'admin'
+        elif user.is_staff:
+            initial_data['user_type'] = 'manager'
+        
+        form = EnhancedUserCreationForm(instance=employee, initial=initial_data)
+    
+    return render(
+        request,
+        "employee/update_permissions_form.html",
+        {"form": form, "employee": employee}
     )

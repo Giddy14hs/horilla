@@ -16,6 +16,8 @@ from pathlib import Path
 
 import environ
 from django.contrib.messages import constants as messages
+import pymysql
+pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -59,13 +61,9 @@ INSTALLED_APPS = [
     "django_filters",
     "base",
     "employee",
-    "recruitment",
     "leave",
     "pms",
-    "onboarding",
-    "asset",
     "attendance",
-    "payroll",
     "widget_tweaks",
     "django_apscheduler",
 ]
@@ -120,21 +118,18 @@ if env("DATABASE_URL", default=None):
     }
 else:
     DATABASES = {
-        "default": {
-            "ENGINE": env("DB_ENGINE", default="django.db.backends.sqlite3"),
-            "NAME": env(
-                "DB_NAME",
-                default=os.path.join(
-                    BASE_DIR,
-                    "TestDB_Horilla.sqlite3",
-                ),
-            ),
-            "USER": env("DB_USER", default=""),
-            "PASSWORD": env("DB_PASSWORD", default=""),
-            "HOST": env("DB_HOST", default=""),
-            "PORT": env("DB_PORT", default=""),
-        }
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'employee-management',           # Your database name
+        'USER': 'root',      # Your MySQL username
+        'PASSWORD': 'Lemiso24*#*', # Your MySQL password
+        'HOST': 'localhost',         # Or your MySQL server address
+        'PORT': '3306',              # Default MySQL port
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -187,6 +182,7 @@ MESSAGE_TAGS = {
 CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
 
 LOGIN_URL = "/login"
+LOGIN_REDIRECT_URL = "/"
 
 
 SIMPLE_HISTORY_REVERT_DISABLED = True

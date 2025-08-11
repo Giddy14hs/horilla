@@ -27,7 +27,7 @@ from datetime import date
 from typing import Any
 
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group, Permission
 from django.db.models import Q
 from django.forms import DateInput, TextInput
 from django.template.loader import render_to_string
@@ -148,24 +148,30 @@ class UserPermissionForm(ModelForm):
 
 
 class EmployeeForm(ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput, required=False, label=_('Password'))
     """
     Form for Employee model
     """
 
     class Meta:
-        """
-        Meta class to add the additional info
-        """
-
         model = Employee
-        fields = "__all__"
-        exclude = (
-            "employee_user_id",
-            "additional_info",
-            "is_from_onboarding",
-            "is_directly_converted",
+        fields = [
+            "badge_id",
+            "employee_first_name",
+            "employee_last_name",
+            "employee_profile",
+            "email",
+            "phone",
+            "address",
+            "city",
+            "zip",
+            "dob",
+            "gender",
+            "experience",
+            "marital_status",
             "is_active",
-        )
+            "password",
+        ]
         widgets = {
             "dob": TextInput(attrs={"type": "date", "id": "dob"}),
         }
@@ -193,7 +199,9 @@ class EmployeeForm(ModelForm):
 
     def clean(self):
         super().clean()
-        email = self.cleaned_data["email"]
+        email = self.cleaned_data.get("email")
+        if not email:
+            return  # or raise forms.ValidationError({"email": _("Email is required.")})
         query = Employee.objects.entire().filter(email=email)
         if self.instance and self.instance.id:
             query = query.exclude(id=self.instance.id)
@@ -288,6 +296,20 @@ class EmployeeForm(ModelForm):
                 )
         return badge_id
 
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        password = self.cleaned_data.get("password")
+        if password:
+            if instance.employee_user_id:
+                instance.employee_user_id.set_password(password)
+                instance.employee_user_id.save()
+            else:
+                # User will be created in Employee.save(), so set password after creation
+                pass
+        if commit:
+            instance.save()
+        return instance
+
 
 class EmployeeWorkInformationForm(ModelForm):
     """
@@ -295,29 +317,25 @@ class EmployeeWorkInformationForm(ModelForm):
     """
 
     class Meta:
-        """
-        Meta class to add the additional info
-        """
-
         model = EmployeeWorkInformation
-        fields = "__all__"
-        exclude = ("employee_id", "additional_info", "experience")
-
-        widgets = {
-            "date_joining": DateInput(attrs={"type": "date"}),
-            "contract_end_date": DateInput(attrs={"type": "date"}),
-        }
+        fields = [
+            "department_id",
+            "job_position_id",
+            "job_role_id",
+            "company_id",
+        ]
+        widgets = {}
 
     def __init__(self, *args, disable=False, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["email"].widget.attrs["autocomplete"] = "email"
-
-        self.fields["job_position_id"].widget.attrs.update(
-            {
-                "onchange": "jobChange($(this))",
-            }
-        )
-
+        if "email" in self.fields:
+            self.fields["email"].widget.attrs["autocomplete"] = "email"
+        if "job_position_id" in self.fields:
+            self.fields["job_position_id"].widget.attrs.update(
+                {
+                    "onchange": "jobChange($(this))",
+                }
+            )
         for field in self.fields:
             self.fields[field].widget.attrs["placeholder"] = self.fields[field].label
             if disable:
@@ -770,3 +788,221 @@ class EmployeeGeneralSettingPrefixForm(forms.ModelForm):
             "badge_id_prefix": forms.TextInput(attrs={"class": "oh-input w-100"}),
             "company_id": forms.Select(attrs={"class": "oh-select oh-select-2 w-100"}),
         }
+
+
+class EnhancedUserCreationForm(ModelForm):
+    """
+    Enhanced form for creating users with different permission levels
+    """
+    USER_TYPE_CHOICES = [
+        ('employee', _('Employee')),
+        ('admin', _('Administrator')),
+        ('manager', _('Manager')),
+    ]
+
+    user_type = forms.ChoiceField(
+        choices=USER_TYPE_CHOICES,
+        label=_('User Type'),
+        help_text=_('Choose the type of user to create')
+    )
+
+    password = forms.CharField(
+        widget=forms.PasswordInput,
+        required=True,
+        label=_('Password'),
+        help_text=_('Password for the user account')
+    )
+
+    confirm_password = forms.CharField(
+        widget=forms.PasswordInput,
+        required=True,
+        label=_('Confirm Password'),
+        help_text=_('Confirm the password')
+    )
+
+    is_superuser = forms.BooleanField(
+        required=False,
+        label=_('Superuser Access'),
+        help_text=_('Give this user superuser privileges (only for admin users)')
+    )
+
+    # Admin-specific fields
+    admin_permissions = forms.MultipleChoiceField(
+        choices=[],
+        required=False,
+        label=_('Admin Permissions'),
+        help_text=_('Select specific permissions for admin users'),
+        widget=forms.CheckboxSelectMultiple
+    )
+
+    # Employee-specific fields
+    employee_groups = forms.ModelMultipleChoiceField(
+        queryset=Group.objects.all(),
+        required=False,
+        label=_('Employee Groups'),
+        help_text=_('Assign employee to specific groups')
+    )
+
+    employee_permissions = forms.MultipleChoiceField(
+        choices=[],
+        required=False,
+        label=_('Employee Permissions'),
+        help_text=_('Select specific permissions for employee users'),
+        widget=forms.CheckboxSelectMultiple
+    )
+
+    class Meta:
+        model = Employee
+        fields = [
+            "badge_id",
+            "employee_first_name",
+            "employee_last_name",
+            "employee_profile",
+            "email",
+            "phone",
+            "address",
+            "city",
+            "zip",
+            "dob",
+            "gender",
+            "experience",
+            "marital_status",
+            "is_active",
+        ]
+        widgets = {
+            "dob": TextInput(attrs={"type": "date", "id": "dob"}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Set up permission choices
+        all_permissions = Permission.objects.all()
+        self.fields['admin_permissions'].choices = [
+            (perm.codename, f"{perm.content_type.app_label}.{perm.name}")
+            for perm in all_permissions
+        ]
+        self.fields['employee_permissions'].choices = [
+            (perm.codename, f"{perm.content_type.app_label}.{perm.name}")
+            for perm in all_permissions
+        ]
+
+        # Set up form attributes
+        self.fields["email"].widget.attrs["autocomplete"] = "email"
+        self.fields["phone"].widget.attrs["autocomplete"] = "phone"
+        self.fields["address"].widget.attrs["autocomplete"] = "address"
+
+        if instance := kwargs.get("instance"):
+            initial = {}
+            if instance.dob is not None:
+                initial["dob"] = instance.dob.strftime("%Y-%m-%d")
+            kwargs["initial"] = initial
+        else:
+            self.initial = {"badge_id": self.get_next_badge_id()}
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        confirm_password = cleaned_data.get('confirm_password')
+        user_type = cleaned_data.get('user_type')
+        is_superuser = cleaned_data.get('is_superuser')
+
+        if password and confirm_password:
+            if password != confirm_password:
+                raise forms.ValidationError(_("Passwords do not match."))
+
+        if user_type == 'employee' and is_superuser:
+            raise forms.ValidationError(_("Employees cannot have superuser privileges."))
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        employee = super().save(commit=False)
+
+        # Create the user based on user type
+        user_type = self.cleaned_data.get('user_type')
+        email = self.cleaned_data.get('email')
+        password = self.cleaned_data.get('password')
+        is_superuser = self.cleaned_data.get('is_superuser', False)
+
+        # Create user with appropriate permissions
+        if user_type == 'admin':
+            user = User.objects.create_user(
+                username=email,
+                email=email,
+                password=password,
+                is_superuser=is_superuser,
+                is_staff=True,
+            )
+
+            # Assign admin permissions
+            admin_permissions = self.cleaned_data.get('admin_permissions', [])
+            if admin_permissions:
+                permissions = Permission.objects.filter(codename__in=admin_permissions)
+                user.user_permissions.set(permissions)
+
+        elif user_type == 'manager':
+            user = User.objects.create_user(
+                username=email,
+                email=email,
+                password=password,
+                is_superuser=False,
+                is_staff=True,
+            )
+
+            # Assign manager permissions (subset of admin permissions)
+            manager_permissions = [
+                'view_employee', 'change_employee', 'add_employee',
+                'view_attendance', 'change_attendance',
+                'view_leave', 'change_leave',
+                'view_pms', 'change_pms',
+            ]
+            permissions = Permission.objects.filter(codename__in=manager_permissions)
+            user.user_permissions.set(permissions)
+
+        else:  # employee
+            user = User.objects.create_user(
+                username=email,
+                email=email,
+                password=password,
+                is_superuser=False,
+                is_staff=False,
+            )
+
+            # Assign employee permissions
+            employee_permissions = self.cleaned_data.get('employee_permissions', [])
+            if employee_permissions:
+                permissions = Permission.objects.filter(codename__in=employee_permissions)
+                user.user_permissions.set(permissions)
+
+            # Assign employee groups
+            employee_groups = self.cleaned_data.get('employee_groups', [])
+            if employee_groups:
+                user.groups.set(employee_groups)
+
+            # Default employee permissions
+            default_employee_permissions = [
+                'view_ownprofile', 'change_ownprofile',
+                'view_attendance', 'add_attendance',
+                'view_leave', 'add_leave',
+            ]
+            default_permissions = Permission.objects.filter(codename__in=default_employee_permissions)
+            user.user_permissions.add(*default_permissions)
+
+        employee.employee_user_id = user
+
+        if commit:
+            employee.save()
+
+        return employee
+
+    def get_next_badge_id(self):
+        """Get the next available badge ID"""
+        last_employee = Employee.objects.order_by('-badge_id').first()
+        if last_employee and last_employee.badge_id:
+            try:
+                last_id = int(last_employee.badge_id)
+                return str(last_id + 1)
+            except ValueError:
+                pass
+        return "1"
