@@ -2,7 +2,7 @@
 {% load accessibility_filters %}
 {% if "attendance"|app_installed %}
     {% if not 'offline_employees' in charts %}
-        {% if perms.employee.view_employee or request.user|is_reportingmanager %}
+        {% if request.user.is_superuser or perms.employee.view_employee or request.user|is_reportingmanager %}
             <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart" id="notInYetId">
                 <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="min-height: 425px">
                     <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
@@ -23,7 +23,7 @@
         {% endif %}
     {% endif %}
     {% if not 'online_employees' in charts %}
-        {% if perms.employee.view_employee or request.user|is_reportingmanager %}
+        {% if request.user.is_superuser or perms.employee.view_employee or request.user|is_reportingmanager %}
             <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart" id="notoutYetId">
                 <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="height:425px">
                     <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
@@ -43,7 +43,7 @@
     {% endif %}
 {% endif %}
 {% if "leave"|app_installed and not 'overall_leave_chart' in charts %}
-    {% if perms.leave.view_leaverequest %}
+    {% if request.user.is_superuser or perms.leave.view_leaverequest %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-4 oh-card-dashboard--moveable dashboardChart" id="movable1">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
@@ -104,7 +104,7 @@
     {% endif %}
 {% endif %}
 {% if "recruitment"|app_installed and not 'recruitment_analytics' in charts %}
-    {% if request.user|is_stagemanager or perms.recruitment.view_recruitment %}
+    {% if request.user.is_superuser or request.user|is_stagemanager or perms.recruitment.view_recruitment %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart" id="movable8">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
@@ -123,7 +123,7 @@
     {% endif %}
 {% endif %}
 {% if "attendance"|app_installed and not 'attendance_analytic' in charts %}
-    {% if request.user|is_reportingmanager or perms.attendance.view_attendance %}
+    {% if request.user.is_superuser or request.user|is_reportingmanager or perms.attendance.view_attendance %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart" id="movable4">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider" id="attendance_header">
@@ -157,7 +157,7 @@
     {% endif %}
 {% endif %}
 {% if "attendance"|app_installed and not 'hours_chart' in charts %}
-    {% if request.user|is_reportingmanager or perms.attendance.view_attendance %}
+    {% if request.user.is_superuser or request.user|is_reportingmanager or perms.attendance.view_attendance %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart" id="pendingHours">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider mb-0" id="pendingHoursHeader">
@@ -181,8 +181,8 @@
         </div>
     {% endif %}
 {% endif %}
-{% if not 'employees_chart' in charts %}
-    {% if 'employees_chart'|feature_is_accessible:request or perms.employee.view_employee or request.user|is_reportingmanager %}
+{% if request.user.is_superuser or not 'employees_chart' in charts %}
+    {% if request.user.is_superuser or 'employees_chart'|feature_is_accessible:request or perms.employee.view_employee or request.user|is_reportingmanager %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-4 oh-card-dashboard--moveable dashboardChart" id="movable5">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
@@ -200,8 +200,8 @@
         </div>
     {% endif %}
 {% endif %}
-{% if not 'department_chart' in charts %}
-    {% if 'department_chart'|feature_is_accessible:request or perms.employee.view_employee or request.user|is_reportingmanager %}
+{% if request.user.is_superuser or not 'department_chart' in charts %}
+    {% if request.user.is_superuser or 'department_chart'|feature_is_accessible:request or perms.employee.view_employee or request.user|is_reportingmanager %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-4 oh-card-dashboard--moveable dashboardChart" id="movable6">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
@@ -219,8 +219,8 @@
         </div>
     {% endif %}
 {% endif %}
-{% if not 'gender_chart' in charts %}
-    {% if 'gender_chart'|feature_is_accessible:request or perms.employee.view_employee or request.user|is_reportingmanager %}
+{% if request.user.is_superuser or not 'gender_chart' in charts %}
+    {% if request.user.is_superuser or 'gender_chart'|feature_is_accessible:request or perms.employee.view_employee or request.user|is_reportingmanager %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-4 oh-card-dashboard--moveable dashboardChart" id="movable7">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
@@ -256,7 +256,7 @@
     </div>
 {% endif %}
 {% if "pms"|app_installed and not 'key_result_status' in charts %}
-    {% if perms.pms.view_employeekeyresult or request.user|is_reportingmanager %}
+    {% if request.user.is_superuser or perms.pms.view_employeekeyresult or request.user|is_reportingmanager %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-4 oh-card-dashboard--moveable dashboardChart" id="movable10">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
@@ -275,7 +275,7 @@
     {% endif %}
 {% endif %}
 {% if "pms"|app_installed and not 'feedback_status' in charts %}
-    {% if perms.pms.view_feedback or request.user|is_reportingmanager %}
+    {% if request.user.is_superuser or perms.pms.view_feedback or request.user|is_reportingmanager %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-4 oh-card-dashboard--moveable dashboardChart" id="movable11">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
@@ -296,7 +296,7 @@
     {% endif %}
 {% endif %}
 {% if not 'shift_request_approve' in charts %}
-    {% if perms.base.change_shiftrequest or request.user|is_reportingmanager %}
+    {% if request.user.is_superuser or perms.base.change_shiftrequest or request.user|is_reportingmanager %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart"
             id="shiftRequestApprove">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="height:425px">
@@ -317,7 +317,7 @@
     {% endif %}
 {% endif %}
 {% if not 'work_type_request_approve' in charts %}
-    {% if perms.base.change_worktyperequest or request.user|is_reportingmanager %}
+    {% if request.user.is_superuser or perms.base.change_worktyperequest or request.user|is_reportingmanager %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart"
             id="WorkTypeRequestApprove">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="height:425px">
@@ -339,7 +339,7 @@
     {% endif %}
 {% endif %}
 {% if "attendance"|app_installed and not 'overtime_approve' in charts %}
-    {% if perms.attendance.change_attendance or request.user|is_reportingmanager %}
+    {% if request.user.is_superuser or perms.attendance.change_attendance or request.user|is_reportingmanager %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart" id="OTApprove">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="height:425px"
                 id="OTApproveTarget">
@@ -363,7 +363,7 @@
 {% endif %}
 {% if "attendance"|app_installed %}
     {% if not 'attendance_validate' in charts %}
-        {% if perms.attendance.change_attendance or request.user|is_reportingmanager %}
+        {% if request.user.is_superuser or perms.attendance.change_attendance or request.user|is_reportingmanager %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart" id="AttendanceValidate">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="height:425px">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
@@ -386,7 +386,7 @@
     {% endif %}
 {% endif %}
 {% if "leave"|app_installed and not 'leave_request_approve' in charts %}
-    {% if perms.leave.change_leaverequest or request.user|is_reportingmanager %}
+    {% if request.user.is_superuser or perms.leave.change_leaverequest or request.user|is_reportingmanager %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart" id="LeaveApprove">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="height:425px">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
@@ -406,7 +406,7 @@
     {% endif %}
 {% endif %}
 {% if "leave"|app_installed and not 'leave_allocation_approve' in charts %}
-    {% if perms.leave.change_leaveallocationrequest or request.user|is_reportingmanager %}
+    {% if request.user.is_superuser or perms.leave.change_leaveallocationrequest or request.user|is_reportingmanager %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart"
             id="LeaveAllocationApprove">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="height:425px">
@@ -445,7 +445,7 @@
     </div>
 {% endif %}
 {% if "asset"|app_installed and not 'asset_request_approve' in charts %}
-    {% if perms.asset.view_assetrequest %}
+    {% if request.user.is_superuser or perms.asset.view_assetrequest %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart"
             id="assetRequestApprove">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="height:425px">

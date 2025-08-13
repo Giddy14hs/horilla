@@ -307,13 +307,13 @@
 {% endif %}
 
 {% if "recruitment"|app_installed %}
-    {% if perms.recruitment.view_recruitment or request.user|is_stagemanager %}
+    {% if request.user.is_superuser or perms.recruitment.view_recruitment or request.user|is_stagemanager %}
         <script src="{% static 'dashboard/recruitmentChart.js' %}"></script>
     {% endif %}
 {% endif %}
 
 {% if "attendance"|app_installed %}
-    {% if perms.attendance.view_attendance or request.user|is_reportingmanager %}
+    {% if request.user.is_superuser or perms.attendance.view_attendance or request.user|is_reportingmanager %}
         <script src="{% static 'dashboard/attendanceChart.js' %}"></script>
     {% endif %}
 {% endif %}

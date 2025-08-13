@@ -37,12 +37,14 @@ urlpatterns = [
     path("", include("base.urls")),
     path("", include("horilla_automations.urls")),
     path("", include("horilla_views.urls")),
+    path("", include("helpdesk.urls")),
+    path("", include("horilla_backup.urls")),
     path("employee/", include("employee.urls")),
     path("horilla-widget/", include("horilla_widgets.urls")),
     re_path(
         "^inbox/notifications/", include(notifications.urls, namespace="notifications")
     ),
-    path("i18n/", include("django.conf.urls.i18n")),
+    # Language switching disabled
     path("health/", health_check),
 ]
 
