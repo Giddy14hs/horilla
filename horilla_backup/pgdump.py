@@ -3,7 +3,7 @@ import subprocess
 
 
 def dump_postgres_db(
-    db_name, username, output_file, password=None, host="localhost", port=5432
+    db_name, username, output_file, password=None, host="localhost", port=5432, format="sql"
 ):
     # Set environment variable for the password if provided
     if password:
@@ -18,12 +18,24 @@ def dump_postgres_db(
         str(port),
         "-U",
         username,
-        "-F",
-        "c",  # Custom format
         "-f",
         output_file,
         db_name,
     ]
+    
+    # Add format-specific options
+    if format == "sql":
+        # SQL format (plain text)
+        dump_command.extend(["-F", "p"])
+    elif format == "custom":
+        # Custom format (compressed)
+        dump_command.extend(["-F", "c"])
+    elif format == "directory":
+        # Directory format
+        dump_command.extend(["-F", "d"])
+    elif format == "tar":
+        # Tar format
+        dump_command.extend(["-F", "t"])
 
     try:
         # Execute the pg_dump command

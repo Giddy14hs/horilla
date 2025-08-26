@@ -18,6 +18,11 @@ import environ
 from django.contrib.messages import constants as messages
 import pymysql
 pymysql.install_as_MySQLdb()
+# horilla_settings.py
+from horilla import settings
+
+DB_INIT_PASSWORD = settings.env("DB_INIT_PASSWORD", default="changeme123")
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,6 +50,9 @@ DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 
+# Database Initialization Password
+DB_INIT_PASSWORD = env("DB_INIT_PASSWORD", default="d3f6a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d")
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -62,8 +70,8 @@ INSTALLED_APPS = [
     "base",
     "employee",
     "leave",
-    "pms",
     "attendance",
+    "offboarding",
     "widget_tweaks",
     "django_apscheduler",
 ]

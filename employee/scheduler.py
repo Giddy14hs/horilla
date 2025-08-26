@@ -56,7 +56,6 @@ def block_unblock_disciplinary():
 
                             employees = dis.employee_id.all()
                             for emp in employees:
-
                                 # Taking the shift of employee for taking the work start time
                                 shift = emp.employee_work_info.shift_id
                                 shift_detail = EmployeeShiftSchedule.objects.filter(
@@ -132,14 +131,17 @@ def block_unblock_disciplinary():
     return
 
 
-if not any(
-    cmd in sys.argv
-    for cmd in ["makemigrations", "migrate", "compilemessages", "flush", "shell"]
-):
+def start_scheduler():
     """
-    Initializes and starts background tasks using APScheduler when the server is running.
+    Initializes and starts background tasks using APScheduler.
+    This function should be called after Django models are fully loaded.
     """
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(update_experience, "interval", hours=4)
-    scheduler.add_job(block_unblock_disciplinary, "interval", seconds=25)
-    scheduler.start()
+    try:
+        from apscheduler.schedulers.background import BackgroundScheduler
+        scheduler = BackgroundScheduler()
+        scheduler.add_job(update_experience, "interval", hours=4)
+        scheduler.add_job(block_unblock_disciplinary, "interval", seconds=25)
+        scheduler.start()
+        print("Employee scheduler started successfully")
+    except Exception as e:
+        print(f"Failed to start employee scheduler: {e}")

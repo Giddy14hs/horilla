@@ -40,12 +40,15 @@ class HorillaAutomationConfig(AppConfig):
 
             MODEL_CHOICES = list(set(MODEL_CHOICES))
             try:
-                start_automation()
-            except Exception as e:
-                print(e)
-                """
-                Migrations are not affected yet
-                """
+                from django.db.migrations.executor import MigrationExecutor
+                from django.db import connection
+
+                executor = MigrationExecutor(connection)
+                plan = executor.migration_plan(executor.loader.graph.leaf_nodes())
+                if not plan:
+                    start_automation()
+            except Exception:
+                pass
         except:
             """
             Models not ready yet

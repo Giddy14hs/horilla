@@ -1709,6 +1709,36 @@ class ShiftRequestForm(ModelForm):
     ShiftRequest model's form
     """
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Set proper querysets for foreign key fields
+        from employee.models import Employee
+        from base.models import EmployeeShift
+        
+        # Employee field - filter active employees with work info
+        self.fields["employee_id"].queryset = Employee.objects.filter(
+            is_active=True,
+            employee_work_info__isnull=False
+        ).distinct()
+        
+        # Shift field - filter active shifts
+        qs = EmployeeShift.objects.filter(is_active=True)
+        self.fields["shift_id"].queryset = qs
+        # If no shifts exist, hide field to avoid empty-label message
+        if not qs.exists():
+            self.fields["shift_id"].required = False
+            self.fields["shift_id"].widget = forms.HiddenInput()
+        
+        # Add HTMX functionality for shift_id
+        self.fields["shift_id"].widget.attrs.update(
+            {
+                "hx-target": "#id_reallocate_to_parent_div",
+                "hx-trigger": "change",
+                "hx-get": "/update-employee-allocation",
+            }
+        )
+
     class Meta:
         """
         Meta class for additional options
@@ -1748,7 +1778,10 @@ class ShiftRequestForm(ModelForm):
         if not self.instance.approved:
             employee = self.instance.employee_id
             if hasattr(employee, "employee_work_info"):
-                self.instance.previous_shift_id = employee.employee_work_info.shift_id
+                try:
+                    self.instance.previous_shift_id = employee.employee_work_info.shift_id
+                except Exception:
+                    self.instance.previous_shift_id = None
                 if self.instance.is_permanent_shift:
                     self.instance.requested_till = None
         return super().save(commit)
@@ -1760,6 +1793,35 @@ class ShiftAllocationForm(ModelForm):
     """
     ShiftRequest model's form
     """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Set proper querysets for foreign key fields
+        from employee.models import Employee
+        from base.models import EmployeeShift
+        
+        # Employee field - filter active employees with work info
+        self.fields["employee_id"].queryset = Employee.objects.filter(
+            is_active=True,
+            employee_work_info__isnull=False
+        ).distinct()
+        
+        # Shift field - filter active shifts
+        qs = EmployeeShift.objects.filter(is_active=True)
+        self.fields["shift_id"].queryset = qs
+        if not qs.exists():
+            self.fields["shift_id"].required = False
+            self.fields["shift_id"].widget = forms.HiddenInput()
+        
+        # Add HTMX functionality for shift_id
+        self.fields["shift_id"].widget.attrs.update(
+            {
+                "hx-target": "#id_reallocate_to_parent_div",
+                "hx-trigger": "change",
+                "hx-get": "/update-employee-allocation",
+            }
+        )
 
     class Meta:
         """
@@ -1789,16 +1851,6 @@ class ShiftAllocationForm(ModelForm):
             "requested_till": _trans("Requested Till"),
         }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["shift_id"].widget.attrs.update(
-            {
-                "hx-target": "#id_reallocate_to_parent_div",
-                "hx-trigger": "change",
-                "hx-get": "/update-employee-allocation",
-            }
-        )
-
     def as_p(self):
         """
         Render the form fields as HTML table rows with Bootstrap styling.
@@ -1811,7 +1863,10 @@ class ShiftAllocationForm(ModelForm):
         if not self.instance.approved:
             employee = self.instance.employee_id
             if hasattr(employee, "employee_work_info"):
-                self.instance.previous_shift_id = employee.employee_work_info.shift_id
+                try:
+                    self.instance.previous_shift_id = employee.employee_work_info.shift_id
+                except Exception:
+                    self.instance.previous_shift_id = None
                 if not self.instance.requested_till:
                     self.instance.requested_till = (
                         employee.employee_work_info.contract_end_date
@@ -1823,6 +1878,26 @@ class WorkTypeRequestForm(ModelForm):
     """
     WorkTypeRequest model's form
     """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Set proper querysets for foreign key fields
+        from employee.models import Employee
+        from base.models import WorkType
+        
+        # Employee field - filter active employees with work info
+        self.fields["employee_id"].queryset = Employee.objects.filter(
+            is_active=True,
+            employee_work_info__isnull=False
+        ).distinct()
+        
+        # Work type field - filter active work types
+        qs = WorkType.objects.filter(is_active=True)
+        self.fields["work_type_id"].queryset = qs
+        if not qs.exists():
+            self.fields["work_type_id"].required = False
+            self.fields["work_type_id"].widget = forms.HiddenInput()
 
     class Meta:
         """
@@ -1860,9 +1935,12 @@ class WorkTypeRequestForm(ModelForm):
         if not self.instance.approved:
             employee = self.instance.employee_id
             if hasattr(employee, "employee_work_info"):
-                self.instance.previous_work_type_id = (
+                try:
+                    self.instance.previous_work_type_id = (
                     employee.employee_work_info.work_type_id
                 )
+                except Exception:
+                    self.instance.previous_work_type_id = None
                 if self.instance.is_permanent_work_type:
                     self.instance.requested_till = None
         return super().save(commit)

@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="{% static 'build/css/style.min.css' %}" />
     <link rel="stylesheet" href="{% static 'build/css/sweetalert2.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/top-navigation.css' %}">
     <link rel="stylesheet" href="{% static 'build/css/summernote-lite.min.css' %}" />
     <link rel="stylesheet" href="{% static 'build/css/orgChart.css' %}" />
     <link rel="stylesheet" href="{% static '/jquery/jqueryui.css' %}">
@@ -52,7 +53,7 @@
 </head>
 
 
-<div hidden id="statiUrl" data-url='{% static "" %}'></div>
+<div hidden id="staticUrl" data-url='{% static "" %}'></div>
 
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     <span class="logged-in" data-user-id="{{request.user.id}}"></span>
@@ -78,7 +79,7 @@
 
     <div class="oh-wrapper-main">
 
-        <!-- Start of Sidebar -->
+        <!-- Start of Sidebar (hidden by top-navigation.css) -->
         <div id="sidebar">
             {% include 'sidebar.html' %}
         </div>
@@ -124,7 +125,7 @@
             <!-- End of Notifications activity bar -->
 
             <!-- Start of Nav bar -->
-            <nav class="oh-navbar" style="width: -webkit-fill-available;;">
+            <nav class="oh-navbar oh-top-navbar" style="width: -webkit-fill-available;">
                 <div class="oh-wrapper oh-navbar__wrapper">
                     <div class="oh-navbar__toggle-container">
                         <a href="#" class="oh-navbar__toggle-link oh-link__unstyled" onclick="handleSidebarToggle()">
@@ -138,6 +139,10 @@
                             <!-- End of breadcrumb in nav bar -->
                         {% endif %}
                         </a>
+                    </div>
+                    <!-- Center menu converted from left sidebar -->
+                    <div class="oh-navbar__center-section">
+                        {% include 'base/navbar_components/top_menu.html' %}
                     </div>
                     <div class="oh-navbar__systray">
                         {% if "attendance"|app_installed %}

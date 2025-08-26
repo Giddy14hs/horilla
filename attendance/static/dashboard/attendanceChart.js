@@ -1,4 +1,4 @@
-staticUrl = $("#statiUrl").attr("data-url");
+staticUrl = $("#staticUrl").attr("data-url");
 $(document).ready(function () {
   // initializing the department overtime chart.
   var departmentChartData = {

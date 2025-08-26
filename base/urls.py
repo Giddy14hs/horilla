@@ -38,7 +38,6 @@ from base.views import update_selected_company
 urlpatterns = [
     path("", views.home, name="home-page"),
     path("initialize-database", views.initialize_database, name="initialize-database"),
-    path("load-demo-database", views.load_demo_database, name="load-demo-database"),
     path(
         "initialize-database-user",
         views.initialize_database_user,
@@ -326,61 +325,7 @@ urlpatterns = [
             "HttpResponse": True,
         },
     ),
-    path(
-        "employee/rotating-work-type-assign/",
-        views.rotating_work_type_assign,
-        name="rotating-work-type-assign",
-    ),
-    path(
-        "rotating-work-type-assign-add",
-        views.rotating_work_type_assign_add,
-        name="rotating-work-type-assign-add",
-    ),
-    path(
-        "rotating-work-type-assign-view",
-        views.rotating_work_type_assign_view,
-        name="rotating-work-type-assign-view",
-    ),
-    path(
-        "rotating-work-type-assign-export",
-        views.rotating_work_type_assign_export,
-        name="rotating-work-type-assign-export",
-    ),
-    path(
-        "settings/rotating-work-type-assign-update/<int:id>/",
-        views.rotating_work_type_assign_update,
-        name="rotating-work-type-assign-update",
-    ),
-    path(
-        "rotating-work-type-assign-duplicate/<int:obj_id>/",
-        views.object_duplicate,
-        name="rotating-work-type-assign-duplicate",
-        kwargs={
-            "model": RotatingWorkTypeAssign,
-            "form": RotatingWorkTypeAssignForm,
-            "template": "base/rotating_work_type/htmx/rotating_work_type_assign_form.html",
-        },
-    ),
-    path(
-        "rotating-work-type-assign-archive/<int:obj_id>/",
-        views.rotating_work_type_assign_archive,
-        name="rotating-work-type-assign-archive",
-    ),
-    path(
-        "rotating-work-type-assign-bulk-archive",
-        views.rotating_work_type_assign_bulk_archive,
-        name="rotating-shift-work-type-bulk-archive",
-    ),
-    path(
-        "rotating-work-type-assign-bulk-delete",
-        views.rotating_work_type_assign_bulk_delete,
-        name="rotating-shift-work-type-bulk-delete",
-    ),
-    path(
-        "rotating-work-type-assign-delete/<int:obj_id>/",
-        views.rotating_work_type_assign_delete,
-        name="rotating-work-type-assign-delete",
-    ),
+    # Rotating Work Type Assign routes removed
     path(
         "settings/employee-type-view/",
         views.employee_type_view,
@@ -493,66 +438,7 @@ urlpatterns = [
             "redirect": "/settings/rotating-shift-view",
         },
     ),
-    path(
-        "employee/rotating-shift-assign/",
-        views.rotating_shift_assign,
-        name="rotating-shift-assign",
-    ),
-    path(
-        "rotating-shift-assign-add",
-        views.rotating_shift_assign_add,
-        name="rotating-shift-assign-add",
-    ),
-    path(
-        "rotating-shift-assign-view",
-        views.rotating_shift_assign_view,
-        name="rotating-shift-assign-view",
-    ),
-    path(
-        "rotating-shift-assign-info-export",
-        views.rotating_shift_assign_export,
-        name="rotating-shift-assign-info-export",
-    ),
-    path(
-        "rotating-shift-assign-info-import",
-        views.rotating_shift_assign_import,
-        name="rotating-shift-assign-info-import",
-    ),
-    path(
-        "settings/rotating-shift-assign-update/<int:id>/",
-        views.rotating_shift_assign_update,
-        name="rotating-shift-assign-update",
-    ),
-    path(
-        "rotating-shift-assign-duplicate/<int:obj_id>/",
-        views.object_duplicate,
-        name="rotating-shift-assign-duplicate",
-        kwargs={
-            "model": RotatingShiftAssign,
-            "form": RotatingShiftAssignForm,
-            "template": "base/rotating_shift/htmx/rotating_shift_assign_form.html",
-        },
-    ),
-    path(
-        "rotating-shift-assign-archive/<int:obj_id>/",
-        views.rotating_shift_assign_archive,
-        name="rotating-shift-assign-archive",
-    ),
-    path(
-        "rotating-shift-assign-bulk-archive",
-        views.rotating_shift_assign_bulk_archive,
-        name="rotating-shift-assign-bulk-archive",
-    ),
-    path(
-        "rotating-shift-assign-bulk-delete",
-        views.rotating_shift_assign_bulk_delete,
-        name="rotating-shift-assign-bulk-delete",
-    ),
-    path(
-        "rotating-shift-assign-delete/<int:obj_id>/",
-        views.rotating_shift_assign_delete,
-        name="rotating-shift-assign-delete",
-    ),
+    # Rotating Shift Assign routes removed
     path("work-type-request", views.work_type_request, name="work-type-request"),
     path(
         "work-type-request-duplicate/<int:obj_id>/",

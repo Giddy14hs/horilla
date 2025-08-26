@@ -425,17 +425,25 @@ class UserLeaveRequestForm(BaseModelForm):
         employee = kwargs.pop("employee", None)
         super(UserLeaveRequestForm, self).__init__(*args, **kwargs)
         self.fields["attachment"].widget.attrs["accept"] = ".jpg, .jpeg, .png, .pdf"
-        if employee:
-            available_leaves = employee.available_leave.all()
-            assigned_leave_types = LeaveType.objects.filter(
-                id__in=available_leaves.values_list("leave_type_id", flat=True)
-            )
-            self.fields["leave_type_id"].queryset = assigned_leave_types
+        
+        # Set proper querysets for foreign key fields
+        from employee.models import Employee
+        from leave.models import LeaveType
+        
+        # Employee field - filter active employees with work info
+        self.fields["employee_id"].queryset = Employee.objects.filter(
+            is_active=True,
+            employee_work_info__isnull=False
+        ).distinct()
+        
+        # Leave type field - filter active leave types
+        self.fields["leave_type_id"].queryset = LeaveType.objects.filter(
+            is_active=True
+        )
+        
         if leave_type:
-            self.fields["leave_type_id"].queryset = LeaveType.objects.filter(
-                id=leave_type["leave_type_id"].id
-            )
-            self.fields["leave_type_id"].initial = leave_type["leave_type_id"].id
+            # Set initial value if provided
+            self.fields["leave_type_id"].initial = leave_type.get("leave_type_id", "")
             self.fields["leave_type_id"].empty_label = None
 
     def as_p(self, *args, **kwargs):

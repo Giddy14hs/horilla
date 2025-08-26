@@ -72,7 +72,7 @@ class Company(HorillaModel):
 
     company = models.CharField(max_length=50, verbose_name=_("Name"))
     hq = models.BooleanField(default=False)
-    address = models.TextField(max_length=255)
+    address = models.CharField(max_length=255)
     country = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
@@ -480,9 +480,8 @@ class EmployeeShiftDay(models.Model):
     """
 
     day = models.CharField(max_length=20, choices=DAY)
-    company_id = models.ManyToManyField(Company, blank=True, verbose_name=_("Company"))
 
-    objects = HorillaCompanyManager()
+    objects = models.Manager()
 
     class Meta:
         """
@@ -496,7 +495,7 @@ class EmployeeShiftDay(models.Model):
         return str(_(self.day).capitalize())
 
 
-class EmployeeShift(HorillaModel):
+class EmployeeShift(models.Model):
     """
     EmployeeShift model
     """
@@ -506,7 +505,6 @@ class EmployeeShift(HorillaModel):
         null=False,
         blank=False,
     )
-    days = models.ManyToManyField(EmployeeShiftDay, through="EmployeeShiftSchedule")
     weekly_full_time = models.CharField(
         max_length=6,
         default="40:00",
@@ -517,7 +515,8 @@ class EmployeeShift(HorillaModel):
     full_time = models.CharField(
         max_length=6, default="200:00", validators=[validate_time_format]
     )
-    company_id = models.ManyToManyField(Company, blank=True, verbose_name=_("Company"))
+    created_at = models.DateTimeField(auto_now_add=True, null=True, verbose_name=_("Created At"))
+    is_active = models.BooleanField(default=True, verbose_name=_("Is Active"))
     if apps.is_installed("attendance"):
         grace_time_id = models.ForeignKey(
             "attendance.GraceTime",
@@ -528,7 +527,7 @@ class EmployeeShift(HorillaModel):
             verbose_name=_("Grace Time"),
         )
 
-    objects = HorillaCompanyManager("employee_shift__company_id")
+    objects = models.Manager()
 
     class Meta:
         """
@@ -541,29 +540,6 @@ class EmployeeShift(HorillaModel):
     def __str__(self) -> str:
         return str(self.employee_shift)
 
-    def clean(self, *args, **kwargs):
-        super().clean(*args, **kwargs)
-        request = getattr(_thread_locals, "request", None)
-        if request and request.POST:
-            company = request.POST.getlist("company_id", None)
-            employee_shift = request.POST.get("employee_shift", None)
-            if (
-                EmployeeShift.objects.filter(
-                    company_id__id__in=company, employee_shift=employee_shift
-                )
-                .exclude(id=self.id)
-                .exists()
-            ):
-                raise ValidationError(
-                    "This employee shift already exists in this company"
-                )
-        return
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        self.clean(*args, **kwargs)
-        return self
-
 
 from django.db.models import Case, When
 
@@ -572,15 +548,21 @@ class EmployeeShiftSchedule(HorillaModel):
     """
     EmployeeShiftSchedule model
     """
-
+    shift_id = models.ForeignKey(
+        EmployeeShift,
+        on_delete=models.CASCADE,
+        verbose_name=_("Shift"),
+        related_name="employeeshiftschedule_set",
+        null=True,
+        blank=True
+    )
     day = models.ForeignKey(
         EmployeeShiftDay,
-        on_delete=models.PROTECT,
-        related_name="day_schedule",
-        verbose_name=_("Shift Day"),
-    )
-    shift_id = models.ForeignKey(
-        EmployeeShift, on_delete=models.PROTECT, verbose_name=_("Shift")
+        on_delete=models.CASCADE,
+        verbose_name=_("Day"),
+        related_name="employeeshiftschedule_set",
+        null=True,
+        blank=True
     )
     minimum_working_hour = models.CharField(
         default="08:15",
@@ -604,9 +586,6 @@ class EmployeeShiftSchedule(HorillaModel):
             "Time at which the horilla will automatically check out the employee attendance if they forget."
         ),
     )
-    company_id = models.ManyToManyField(Company, blank=True, verbose_name=_("Company"))
-
-    objects = HorillaCompanyManager("shift_id__employee_shift__company_id")
 
     class Meta:
         """
@@ -615,22 +594,9 @@ class EmployeeShiftSchedule(HorillaModel):
 
         verbose_name = _("Employee Shift Schedule")
         verbose_name_plural = _("Employee Shift Schedules")
-        unique_together = [["shift_id", "day"]]
-        ordering = [
-            Case(
-                When(day__day="monday", then=0),
-                When(day__day="tuesday", then=1),
-                When(day__day="wednesday", then=2),
-                When(day__day="thursday", then=3),
-                When(day__day="friday", then=4),
-                When(day__day="saturday", then=5),
-                When(day__day="sunday", then=6),
-                default=7,
-            )
-        ]
 
     def __str__(self) -> str:
-        return f"{self.shift_id.employee_shift} {self.day}"
+        return f"Shift Schedule {self.id}"
 
     def save(self, *args, **kwargs):
         if self.start_time and self.end_time:
@@ -1573,25 +1539,25 @@ class Announcement(HorillaModel):
         return self.title
 
 
-class AnnouncementComment(HorillaModel):
+class AnnouncementComment(models.Model):
     """
     AnnouncementComment Model
     """
 
     from employee.models import Employee
 
-    announcement_id = models.ForeignKey(Announcement, on_delete=models.CASCADE)
-    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
     comment = models.TextField(null=True, verbose_name=_("Comment"), max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, verbose_name=_("Created At"))
+    is_active = models.BooleanField(default=True, verbose_name=_("Is Active"))
     objects = models.Manager()
 
 
-class AnnouncementView(models.Model):
+class AnnouncementView(HorillaModel):
     """
     Announcement View Model
     """
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='announcement_views')
     announcement = models.ForeignKey(Announcement, on_delete=models.CASCADE)
     viewed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, null=True)

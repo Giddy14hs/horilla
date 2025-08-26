@@ -19,3 +19,13 @@ class EmployeeConfig(AppConfig):
 
     default_auto_field = "django.db.models.BigAutoField"
     name = "employee"
+
+    def ready(self):
+        """
+        This method is called when Django is fully loaded.
+        We use it to start the background scheduler safely.
+        """
+        import sys
+        if 'runserver' in sys.argv:
+            from employee.scheduler import start_scheduler
+            start_scheduler()

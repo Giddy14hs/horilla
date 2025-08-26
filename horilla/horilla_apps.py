@@ -17,7 +17,6 @@ INSTALLED_APPS.append("horilla_automations")
 INSTALLED_APPS.append("auditlog")
 INSTALLED_APPS.append("biometric")
 INSTALLED_APPS.append("helpdesk")
-INSTALLED_APPS.append("offboarding")
 INSTALLED_APPS.append("horilla_backup")
 INSTALLED_APPS.append("project")
 if settings.env("AWS_ACCESS_KEY_ID", default=None) and "storages" not in INSTALLED_APPS:
@@ -48,8 +47,7 @@ SIDEBARS = [
     "employee",
     "attendance",
     "leave",
-    "pms",
-    "offboarding",
+    # "pms",  # removed Performance from navigation/apps
     "helpdesk",
     "project",
 ]

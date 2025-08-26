@@ -39,7 +39,8 @@ urlpatterns = [
     path(
         "attendance-info-export", views.attendance_export, name="attendance-info-export"
     ),
-    path("attendance-view/", views.attendance_view, name="attendance-view"),
+    # Removed attendance-view endpoints
+    # path("attendance-view/", views.attendance_view, name="attendance-view"),
     path(
         "attendance-search",
         attendance.views.search.attendance_search,
@@ -90,46 +91,15 @@ urlpatterns = [
         views.attendance_overtime_delete,
         name="attendance-overtime-delete",
     ),
-    path(
-        "attendance-activity-view/",
-        views.attendance_activity_view,
-        name="attendance-activity-view",
-    ),
-    path(
-        "attendance-activity-single-view/<int:obj_id>/",
-        views.activity_single_view,
-        name="attendance-activity-single-view",
-    ),
-    path(
-        "attendance-activity-search",
-        attendance.views.search.attendance_activity_search,
-        name="attendance-activity-search",
-    ),
-    path(
-        "attendance-activity-delete/<int:obj_id>/",
-        views.attendance_activity_delete,
-        name="attendance-activity-delete",
-    ),
-    path(
-        "attendance-activity-bulk-delete",
-        views.attendance_activity_bulk_delete,
-        name="attendance-activity-bulk-delete",
-    ),
-    path(
-        "attendance-activity-import",
-        views.attendance_activity_import,
-        name="attendance-activity-import",
-    ),
-    path(
-        "attendance-activity-import-excel",
-        views.attendance_activity_import_excel,
-        name="attendance-activity-import-excel",
-    ),
-    path(
-        "attendance-activity-info-export",
-        views.attendance_activity_export,
-        name="attendance-activity-info-export",
-    ),
+    # Removed attendance activity endpoints
+    # path("attendance-activity-view/", views.attendance_activity_view, name="attendance-activity-view"),
+    # path("attendance-activity-single-view/<int:obj_id>/", views.activity_single_view, name="attendance-activity-single-view"),
+    # path("attendance-activity-search", attendance.views.search.attendance_activity_search, name="attendance-activity-search"),
+    # path("attendance-activity-delete/<int:obj_id>/", views.attendance_activity_delete, name="attendance-activity-delete"),
+    # path("attendance-activity-bulk-delete", views.attendance_activity_bulk_delete, name="attendance-activity-bulk-delete"),
+    # path("attendance-activity-import", views.attendance_activity_import, name="attendance-activity-import"),
+    # path("attendance-activity-import-excel", views.attendance_activity_import_excel, name="attendance-activity-import-excel"),
+    # path("attendance-activity-info-export", views.attendance_activity_export, name="attendance-activity-info-export"),
     path("view-my-attendance/", views.view_my_attendance, name="view-my-attendance"),
     path(
         "filter-own-attendance",
@@ -348,11 +318,7 @@ urlpatterns = [
         views.user_request_one_view,
         name="user-request-one-view",
     ),
-    path(
-        "get-attendance-activities/<int:obj_id>",
-        views.get_attendance_activities,
-        name="get-attendance-activities",
-    ),
+    # path("get-attendance-activities/<int:obj_id>", views.get_attendance_activities, name="get-attendance-activities"),
     path(
         "hour-attendance-select/",
         views.hour_attendance_select,
@@ -368,16 +334,8 @@ urlpatterns = [
         views.attendance_account_bulk_delete,
         name="attendance-account-bulk-delete",
     ),
-    path(
-        "activity-attendance-select/",
-        views.activity_attendance_select,
-        name="activity-attendance-select",
-    ),
-    path(
-        "activity-attendance-select-filter/",
-        views.activity_attendance_select_filter,
-        name="activity-attendance-select-filter",
-    ),
+    # path("activity-attendance-select/", views.activity_attendance_select, name="activity-attendance-select"),
+    # path("activity-attendance-select-filter/", views.activity_attendance_select_filter, name="activity-attendance-select-filter"),
     path(
         "latecome-attendance-select/",
         views.latecome_attendance_select,

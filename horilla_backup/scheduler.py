@@ -93,6 +93,7 @@ def google_drive_backup():
                 username=db["USER"],
                 output_file="backupdb.dump",
                 password=db["PASSWORD"],
+                format="custom"  # Use custom format for scheduled backups
             )
             upload_file("backupdb.dump", service_account_file, gdrive_folder_id)
             os.remove("backupdb.dump")

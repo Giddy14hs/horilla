@@ -128,7 +128,11 @@
       "modified_by": 1,
       "is_active": true,
       "department": "Managers",
-      "company_id": [1, 2, 3]
+      "company_id": [
+        1,
+        2,
+        3
+      ]
     }
   },
   {
@@ -1090,433 +1094,6 @@
     }
   },
   {
-    "model": "base.rotatingworktype",
-    "pk": 1,
-    "fields": {
-      "created_at": "2025-06-22T08:29:31.860Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "name": "WFH to WFO",
-      "work_type1": 2,
-      "work_type2": 1,
-      "additional_data": {}
-    }
-  },
-  {
-    "model": "base.rotatingworktype",
-    "pk": 2,
-    "fields": {
-      "created_at": "2025-06-22T08:29:47.665Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "name": "WFO to WFH",
-      "work_type1": 1,
-      "work_type2": 2,
-      "additional_data": {}
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 1,
-    "fields": {
-      "created_at": "2025-06-05T09:54:25.663Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 37,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 2,
-    "fields": {
-      "created_at": "2025-06-05T09:54:25.749Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 36,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 3,
-    "fields": {
-      "created_at": "2025-06-05T09:54:25.793Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 9,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 4,
-    "fields": {
-      "created_at": "2025-06-05T09:54:25.845Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 71,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 5,
-    "fields": {
-      "created_at": "2025-06-05T09:54:25.892Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 58,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 6,
-    "fields": {
-      "created_at": "2025-06-05T09:54:25.938Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 44,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 7,
-    "fields": {
-      "created_at": "2025-06-05T09:54:25.991Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 8,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 8,
-    "fields": {
-      "created_at": "2025-06-05T09:54:26.038Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 39,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 9,
-    "fields": {
-      "created_at": "2025-06-05T09:54:26.087Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 75,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 10,
-    "fields": {
-      "created_at": "2025-06-05T09:54:26.135Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 43,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 11,
-    "fields": {
-      "created_at": "2025-06-05T09:54:26.181Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 70,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 12,
-    "fields": {
-      "created_at": "2025-06-05T09:54:26.220Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 66,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 13,
-    "fields": {
-      "created_at": "2025-06-05T09:54:26.277Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 20,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 14,
-    "fields": {
-      "created_at": "2025-06-05T09:54:26.319Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 32,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 15,
-    "fields": {
-      "created_at": "2025-06-05T09:54:26.376Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 6,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 16,
-    "fields": {
-      "created_at": "2025-06-05T09:54:26.425Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 10,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 17,
-    "fields": {
-      "created_at": "2025-06-05T09:54:26.467Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 2,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 18,
-    "fields": {
-      "created_at": "2025-06-05T09:54:26.514Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 17,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingworktypeassign",
-    "pk": 19,
-    "fields": {
-      "created_at": "2025-06-05T09:54:26.554Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 42,
-      "rotating_work_type_id": 2,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-11",
-      "current_work_type": 1,
-      "next_work_type": 1,
-      "based_on": "after",
-      "rotate_after_day": 3,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1, "next_work_type_index": 1 }
-    }
-  },
-  {
     "model": "base.employeetype",
     "pk": 1,
     "fields": {
@@ -1555,37 +1132,58 @@
   {
     "model": "base.employeeshiftday",
     "pk": 1,
-    "fields": { "day": "monday", "company_id": [] }
+    "fields": {
+      "day": "monday",
+      "company_id": []
+    }
   },
   {
     "model": "base.employeeshiftday",
     "pk": 2,
-    "fields": { "day": "tuesday", "company_id": [] }
+    "fields": {
+      "day": "tuesday",
+      "company_id": []
+    }
   },
   {
     "model": "base.employeeshiftday",
     "pk": 3,
-    "fields": { "day": "wednesday", "company_id": [] }
+    "fields": {
+      "day": "wednesday",
+      "company_id": []
+    }
   },
   {
     "model": "base.employeeshiftday",
     "pk": 4,
-    "fields": { "day": "thursday", "company_id": [] }
+    "fields": {
+      "day": "thursday",
+      "company_id": []
+    }
   },
   {
     "model": "base.employeeshiftday",
     "pk": 5,
-    "fields": { "day": "friday", "company_id": [] }
+    "fields": {
+      "day": "friday",
+      "company_id": []
+    }
   },
   {
     "model": "base.employeeshiftday",
     "pk": 6,
-    "fields": { "day": "saturday", "company_id": [] }
+    "fields": {
+      "day": "saturday",
+      "company_id": []
+    }
   },
   {
     "model": "base.employeeshiftday",
     "pk": 7,
-    "fields": { "day": "sunday", "company_id": [] }
+    "fields": {
+      "day": "sunday",
+      "company_id": []
+    }
   },
   {
     "model": "base.employeeshift",
@@ -1931,244 +1529,6 @@
       "is_auto_punch_out_enabled": false,
       "auto_punch_out_time": null,
       "company_id": []
-    }
-  },
-  {
-    "model": "base.rotatingshift",
-    "pk": 1,
-    "fields": {
-      "created_at": "2025-06-22T08:30:28.174Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "name": "Morning to Night",
-      "shift1": 3,
-      "shift2": 2,
-      "additional_data": {}
-    }
-  },
-  {
-    "model": "base.rotatingshift",
-    "pk": 2,
-    "fields": {
-      "created_at": "2025-06-22T08:30:44.634Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "name": "Night to Morning",
-      "shift1": 2,
-      "shift2": 3,
-      "additional_data": {}
-    }
-  },
-  {
-    "model": "base.rotatingshiftassign",
-    "pk": 1,
-    "fields": {
-      "created_at": "2025-06-05T09:48:38.892Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 12,
-      "rotating_shift_id": 1,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-06",
-      "current_shift": 1,
-      "next_shift": 3,
-      "based_on": "after",
-      "rotate_after_day": 1,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingshiftassign",
-    "pk": 2,
-    "fields": {
-      "created_at": "2025-06-05T09:48:38.967Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 13,
-      "rotating_shift_id": 1,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-06",
-      "current_shift": 1,
-      "next_shift": 3,
-      "based_on": "after",
-      "rotate_after_day": 1,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingshiftassign",
-    "pk": 3,
-    "fields": {
-      "created_at": "2025-06-05T09:48:39.015Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 11,
-      "rotating_shift_id": 1,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-06",
-      "current_shift": 1,
-      "next_shift": 3,
-      "based_on": "after",
-      "rotate_after_day": 1,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingshiftassign",
-    "pk": 4,
-    "fields": {
-      "created_at": "2025-06-05T09:48:39.058Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 16,
-      "rotating_shift_id": 1,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-01",
-      "current_shift": 1,
-      "next_shift": 3,
-      "based_on": "monthly",
-      "rotate_after_day": 1,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingshiftassign",
-    "pk": 5,
-    "fields": {
-      "created_at": "2025-06-05T09:48:39.109Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 18,
-      "rotating_shift_id": 1,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-12",
-      "current_shift": 3,
-      "next_shift": 2,
-      "based_on": "weekly",
-      "rotate_after_day": 1,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 0 }
-    }
-  },
-  {
-    "model": "base.rotatingshiftassign",
-    "pk": 6,
-    "fields": {
-      "created_at": "2025-06-05T09:48:39.154Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 14,
-      "rotating_shift_id": 1,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-06",
-      "current_shift": 1,
-      "next_shift": 3,
-      "based_on": "after",
-      "rotate_after_day": 1,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingshiftassign",
-    "pk": 7,
-    "fields": {
-      "created_at": "2025-06-05T09:48:39.212Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 15,
-      "rotating_shift_id": 1,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-12",
-      "current_shift": 3,
-      "next_shift": 2,
-      "based_on": "weekly",
-      "rotate_after_day": 1,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 0 }
-    }
-  },
-  {
-    "model": "base.rotatingshiftassign",
-    "pk": 8,
-    "fields": {
-      "created_at": "2025-06-05T09:48:39.262Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 10,
-      "rotating_shift_id": 1,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-06",
-      "current_shift": 1,
-      "next_shift": 3,
-      "based_on": "after",
-      "rotate_after_day": 1,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1 }
-    }
-  },
-  {
-    "model": "base.rotatingshiftassign",
-    "pk": 9,
-    "fields": {
-      "created_at": "2025-06-05T09:48:39.313Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 17,
-      "rotating_shift_id": 1,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-12",
-      "current_shift": 3,
-      "next_shift": 2,
-      "based_on": "weekly",
-      "rotate_after_day": 1,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 0 }
-    }
-  },
-  {
-    "model": "base.rotatingshiftassign",
-    "pk": 10,
-    "fields": {
-      "created_at": "2025-06-05T09:48:39.363Z",
-      "created_by": 1,
-      "modified_by": 1,
-      "is_active": true,
-      "employee_id": 19,
-      "rotating_shift_id": 1,
-      "start_date": "2025-06-05",
-      "next_change_date": "2025-06-06",
-      "current_shift": 1,
-      "next_shift": 3,
-      "based_on": "after",
-      "rotate_after_day": 1,
-      "rotate_every_weekend": "monday",
-      "rotate_every": "1",
-      "additional_data": { "next_shift_index": 1 }
     }
   },
   {
@@ -2896,32 +2256,50 @@
   {
     "model": "base.dynamicpagination",
     "pk": 1,
-    "fields": { "user_id": 1, "pagination": 25 }
+    "fields": {
+      "user_id": 1,
+      "pagination": 25
+    }
   },
   {
     "model": "base.driverviewed",
     "pk": 1,
-    "fields": { "user": 1, "viewed": "dashboard" }
+    "fields": {
+      "user": 1,
+      "viewed": "dashboard"
+    }
   },
   {
     "model": "base.driverviewed",
     "pk": 2,
-    "fields": { "user": 1, "viewed": "settings" }
+    "fields": {
+      "user": 1,
+      "viewed": "settings"
+    }
   },
   {
     "model": "base.driverviewed",
     "pk": 3,
-    "fields": { "user": 1, "viewed": "pipeline" }
+    "fields": {
+      "user": 1,
+      "viewed": "pipeline"
+    }
   },
   {
     "model": "base.driverviewed",
     "pk": 4,
-    "fields": { "user": 13, "viewed": "dashboard" }
+    "fields": {
+      "user": 13,
+      "viewed": "dashboard"
+    }
   },
   {
     "model": "base.driverviewed",
     "pk": 5,
-    "fields": { "user": 13, "viewed": "pipeline" }
+    "fields": {
+      "user": 13,
+      "viewed": "pipeline"
+    }
   },
   {
     "model": "base.dashboardemployeecharts",
@@ -2966,7 +2344,10 @@
   {
     "model": "base.biometricattendance",
     "pk": 1,
-    "fields": { "is_installed": false, "company_id": null }
+    "fields": {
+      "is_installed": false,
+      "company_id": null
+    }
   },
   {
     "model": "base.holidays",

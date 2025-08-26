@@ -160,14 +160,11 @@ def white_labelling_company(request):
             company = hq
 
         return {
-            "white_label_company_name": company.company if company else "Horilla",
+            "white_label_company_name": company.company if company else "",
             "white_label_company": company,
         }
     else:
-        return {
-            "white_label_company_name": "Horilla",
-            "white_label_company": None,
-        }
+        return {"white_label_company_name": "", "white_label_company": None}
 
 
 def resignation_request_enabled(request):
@@ -289,3 +286,39 @@ def enable_profile_edit(request):
             ACCESSBILITY_FEATURE.append(("profile_edit", _("Profile Edit Access")))
 
     return {"profile_edit_enabled": enable}
+
+
+def employee_features_availability(request):
+    """
+    Provide flags indicating whether key employee-related feature data exists,
+    so navigation and settings links can align with actual availability.
+    """
+    try:
+        from base.models import (
+            EmployeeShift,
+            EmployeeShiftSchedule,
+            RotatingShift,
+            RotatingWorkType,
+            WorkType,
+        )
+
+        has_work_types = WorkType.objects.exists()
+        has_employee_shifts = EmployeeShift.objects.exists()
+        has_rotating_shifts = RotatingShift.objects.exists()
+        has_rotating_work_types = RotatingWorkType.objects.exists()
+        has_shift_schedules = EmployeeShiftSchedule.objects.exists()
+    except Exception:
+        # If any issue occurs (e.g., during migrations), default to False to be safe
+        has_work_types = False
+        has_employee_shifts = False
+        has_rotating_shifts = False
+        has_rotating_work_types = False
+        has_shift_schedules = False
+
+    return {
+        "has_work_types": has_work_types,
+        "has_employee_shifts": has_employee_shifts,
+        "has_rotating_shifts": has_rotating_shifts,
+        "has_rotating_work_types": has_rotating_work_types,
+        "has_shift_schedules": has_shift_schedules,
+    }

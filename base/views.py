@@ -291,8 +291,8 @@ def initialize_database(request):
     """
     if initialize_database_condition():
         if request.method == "POST":
-            password = request._post.get("password")
-            if DB_INIT_PASSWORD == password:
+            password = request.POST.get("password")
+            if settings.DB_INIT_PASSWORD == password:
                 return redirect(initialize_database_user)
             else:
                 messages.warning(
@@ -6761,9 +6761,19 @@ def employee_chart_show(request):
     """
     This function is used to choose which chart to show in the dashboard
     """
-    employee_charts = DashboardEmployeeCharts.objects.get_or_create(
-        employee=request.user.employee_get
-    )[0]
+    # Check if user has an associated employee record
+    if not hasattr(request.user, 'employee_get') or not request.user.employee_get:
+        messages.error(request, _("Employee profile not found. Please contact your administrator."))
+        return HttpResponse("<script>window.location.reload();</script>")
+    
+    try:
+        employee_charts = DashboardEmployeeCharts.objects.get_or_create(
+            employee=request.user.employee_get
+        )[0]
+    except Exception as e:
+        messages.error(request, _("Error loading dashboard charts. Please try again."))
+        return HttpResponse("<script>window.location.reload();</script>")
+    
     charts = [
         ("offline_employees", _("Offline Employees")),
         ("online_employees", _("Online Employees")),

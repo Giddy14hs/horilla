@@ -183,13 +183,11 @@ user_breadcrumbs = {}
 
 def breadcrumbs(request):
     base_url = request.build_absolute_uri("/")
-    company = white_labelling_company(request)["white_label_company_name"]
+    company = white_labelling_company(request)["white_label_company_name"] or ""
 
     # Initialize breadcrumbs in the session if not already present
     if "breadcrumbs" not in request.session:
-        request.session["breadcrumbs"] = [
-            {"url": base_url, "name": company, "found": True}
-        ]
+        request.session["breadcrumbs"] = [{"url": base_url, "name": company, "found": True}]
 
     try:
         breadcrumbs = request.session["breadcrumbs"]
@@ -315,9 +313,7 @@ def breadcrumbs(request):
         request.session["breadcrumbs"] = breadcrumbs
 
     except Exception as e:
-        request.session["breadcrumbs"] = [
-            {"url": base_url, "name": company, "found": True}
-        ]
+        request.session["breadcrumbs"] = [{"url": base_url, "name": company, "found": True}]
     return {"breadcrumbs": request.session["breadcrumbs"]}
 
 

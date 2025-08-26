@@ -8,38 +8,9 @@ from django.urls import path
 
 from base.views import object_delete
 from helpdesk import views
-from helpdesk.models import FAQ, FAQCategory, Ticket
+from helpdesk.models import Ticket
 
 urlpatterns = [
-    path("faq-category-view/", views.faq_category_view, name="faq-category-view"),
-    path("faq-category-create/", views.faq_category_create, name="faq-category-create"),
-    path(
-        "faq-category-update/<int:id>/",
-        views.faq_category_update,
-        name="faq-category-update",
-    ),
-    path(
-        "faq-category-delete/<int:id>/",
-        views.faq_category_delete,
-        name="faq-category-delete",
-    ),
-    path("faq-category-search/", views.faq_category_search, name="faq-category-search"),
-    path(
-        "faq-view/<int:obj_id>/",
-        views.faq_view,
-        name="faq-view",
-        kwargs={"model": FAQCategory},
-    ),
-    path("faq-create/<int:obj_id>/", views.create_faq, name="faq-create"),
-    path("faq-update/<int:obj_id>", views.faq_update, name="faq-update"),
-    path("faq-search/", views.faq_search, name="faq-search"),
-    path("faq-filter/<int:id>/", views.faq_filter, name="faq-filter"),
-    path("faq-suggestion/", views.faq_suggestion, name="faq-suggestion"),
-    path(
-        "faq-delete/<int:id>/",
-        views.faq_delete,
-        name="faq-delete",
-    ),
     path("ticket-view/", views.ticket_view, name="ticket-view"),
     path("ticket-create", views.ticket_create, name="ticket-create"),
     path("ticket-update/<int:ticket_id>", views.ticket_update, name="ticket-update"),
@@ -153,5 +124,4 @@ urlpatterns = [
         views.delete_ticket_document,
         name="delete-ticket-document",
     ),
-    path("load-faqs/", views.load_faqs, name="load-faqs"),
 ]

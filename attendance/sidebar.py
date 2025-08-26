@@ -21,11 +21,6 @@ SUBMENUS = [
         "accessibility": "attendance.sidebar.dashboard_accessibility",
     },
     {
-        "menu": _("Attendances"),
-        "redirect": reverse("attendance-view"),
-        "accessibility": "attendance.sidebar.attendances_accessibility",
-    },
-    {
         "menu": _("Attendance Requests"),
         "redirect": reverse("request-attendance-view"),
     },
@@ -33,10 +28,6 @@ SUBMENUS = [
         "menu": _("Work Records"),
         "redirect": reverse("work-records"),
         "accessibility": "attendance.sidebar.work_record_accessibility",
-    },
-    {
-        "menu": _("Attendance Activities"),
-        "redirect": reverse("attendance-activity-view"),
     },
     {
         "menu": _("Late Come Early Out"),

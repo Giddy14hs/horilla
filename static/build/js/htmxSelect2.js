@@ -3997,7 +3997,7 @@
         t = e.require("jquery.select2");
     return (u.fn.select2.amd = e), t;
 });
-staticUrl = $("#statiUrl").attr("data-url");
+staticUrl = $("#staticUrl").attr("data-url");
 
 $(document).ready(function () {
     $(".oh-select").each(function () {

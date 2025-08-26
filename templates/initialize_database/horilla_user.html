@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login - {{white_label_company_name}} Dashboard</title>
+    <title>Database Authentication</title>
     <link rel="apple-touch-icon" sizes="180x180"
         href="{% if white_label_company.icon %}{{white_label_company.icon.url}} {% else %}{% static 'favicons/apple-touch-icon.png' %}{% endif %}" />
     <link rel="icon" type="image/png" sizes="32x32"
@@ -50,7 +50,6 @@
         <main class="oh-auth">
             <div class="oh-onboarding-card" style="max-height: 790px; max-width: 975px" id="ohAuthCard">
                 <div class="oh-onboarding-card__header">
-                    <span class="oh-onboarding-card__company-name">Horilla HRMS</span>
                     <ul class="oh-onboarding-card__steps">
                         <li class="oh-onboarding-card__step oh-onboarding-card__step--active">
                             <div class="oh-onboarding-card__count">1</div>
@@ -78,7 +77,7 @@
                     {% trans "Database Authentication" %}
                 </h1>
                 <p class="text-muted text-center">
-                    {% trans "Authenticate with your password to initialize the Horilla HRMS database." %}
+                    {% trans "Authenticate with your password to initialize the database." %}
                 </p>
                 <form hx-post="{% url 'initialize-database' %}" hx-target="#ohAuthCard" class="oh-form-group">
                     {% csrf_token %}
@@ -108,7 +107,7 @@
                     </div>
                 </form>
             </div>
-            <img src={% if white_label_company.icon %}"{{white_label_company.icon.url}}"{% else%}"{% static 'images/ui/auth-logo.png' %}"{% endif %} alt="Horilla" />
+
         </main>
     </div>
     <script src="{% static '/build/js/web.frontend.min.js' %}"></script>

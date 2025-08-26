@@ -120,9 +120,10 @@
         </div>
       </div>
       <div class="oh-navbar__action-icons">
-        <a href="#" class="oh-navbar__action-icons-link">
+        <a href="{% url 'general-settings' %}" class="oh-navbar__action-icons-link" title="Settings">
           <ion-icon name="settings-outline"  class="oh-navbar__icon"></ion-icon>
         </a>
+        {% include 'base/navbar_components/company_selection.html' %}
       </div>
       <div class="oh-dropdown" x-data="{open: false}">
         <div class="oh-navbar__user-info" @click="open = !open">
@@ -134,22 +135,21 @@
         <div class="oh-dropdown__menu oh-dropdown__menu--right" x-show="open" @click.outside="open = false">
           <ul class="oh-dropdown__items">
             <li class="oh-dropdown__item">
-              <a href="#" class="oh-dropdown__link"">My Profile</a>
+              <a href="{% url 'employee-profile' %}" class="oh-dropdown__link"">My Profile</a>
             </li>
             <li class="oh-dropdown__item">
-              <a href="#" class="oh-dropdown__link">Company Information</a>
+              <a href="{% url 'company-view' %}" class="oh-dropdown__link">Company Information</a>
             </li>
+            {% if perms.employee.view_employee %}
             <li class="oh-dropdown__item">
-              <a href="#" class="oh-dropdown__link">Notifications</a>
+              <a href="{% url 'employee-view' %}" class="oh-dropdown__link">Employees</a>
             </li>
-            <li class="oh-dropdown__item">
-              <a href="#" class="oh-dropdown__link">Employees</a>
-            </li>
+            {% endif %}
           </ul>
           <hr />
           <ul class="oh-dropdown__items">
             <li class="oh-dropdown__item">
-              <a href="#" class="oh-dropdown__link">Log out</a>
+              <a href="{% url 'logout' %}" class="oh-dropdown__link">Log out</a>
             </li>
           </ul>
         </div>

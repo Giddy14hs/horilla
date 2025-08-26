@@ -1,0 +1,30 @@
+{% load static %}{% load i18n %}
+<ul class="oh-top-navbar__main-menu">
+  <li class="oh-top-navbar__main-menu-item">
+    <a href="{% url 'home-page' %}" class="oh-top-navbar__main-menu-link">
+      <img src="{% static 'images/ui/dashboard.svg' %}" alt="Dashboard" width="18" height="18" style="filter: brightness(0) invert(1);"/>
+      {% trans "Dashboard" %}
+    </a>
+  </li>
+  {% for menues in sidebar %}
+  {% if menues.app != 'pms' %}
+  <li class="oh-top-navbar__main-menu-item">
+    <a href="#" class="oh-top-navbar__main-menu-link">
+      <img src="{% static menues.img_src %}" alt="{{menues.menu}}" width="18" height="18" style="filter: brightness(0) invert(1);"/>
+      <span>{{ menues.menu }}</span>
+    </a>
+    {% if menues.submenu %}
+    <div class="oh-top-navbar__dropdown-menu">
+      {% for submenu in menues.submenu %}
+      {% if menues.app != 'helpdesk' or submenu.menu != 'FAQs' %}
+      <div class="oh-top-navbar__dropdown-item">
+        <a href="{{ submenu.redirect }}" class="oh-top-navbar__dropdown-link">{{ submenu.menu }}</a>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+  </li>
+  {% endif %}
+  {% endfor %}
+</ul>

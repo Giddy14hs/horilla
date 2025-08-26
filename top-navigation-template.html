@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Navigation Bar Template</title>
+    <link rel="stylesheet" href="static/css/top-navigation.css">
+    <!-- Include your existing CSS files -->
+    <link rel="stylesheet" href="static/css/style.css">
+    <!-- Include Material Icons or your preferred icon font -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="oh-top-navbar">
+        <div class="oh-top-navbar__wrapper">
+            <!-- Left Section - Company Brand and Toggle -->
+            <div class="oh-top-navbar__left-section">
+                <!-- Company Brand -->
+                <a href="#" class="oh-top-navbar__company">
+                    <div class="oh-top-navbar__company-profile">
+                        <i class="material-icons">business</i>
+                    </div>
+                    <div class="oh-top-navbar__company-details">
+                        <div class="oh-top-navbar__company-title">Company Name</div>
+                        <div class="oh-top-navbar__company-link">company.com</div>
+                    </div>
+                </a>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="oh-top-navbar__toggle" id="mobileMenuToggle">
+                    <i class="material-icons">menu</i>
+                </button>
+            </div>
+            
+            <!-- Center Section - Main Navigation Menu -->
+            <div class="oh-top-navbar__center-section">
+                <ul class="oh-top-navbar__main-menu">
+                    <!-- Dashboard -->
+                    <li class="oh-top-navbar__main-menu-item">
+                        <a href="#" class="oh-top-navbar__main-menu-link oh-top-navbar__main-menu-link--active">
+                            <i class="oh-top-navbar__menu-icon material-icons">dashboard</i>
+                            Dashboard
+                        </a>
+                    </li>
+                    
+                    <!-- Employee Management -->
+                    <li class="oh-top-navbar__main-menu-item">
+                        <a href="#" class="oh-top-navbar__main-menu-link">
+                            <i class="oh-top-navbar__menu-icon material-icons">people</i>
+                            Employees
+                        </a>
+                        <!-- Dropdown Menu -->
+                        <div class="oh-top-navbar__dropdown-menu">
+                            <div class="oh-top-navbar__dropdown-item">
+                                <a href="#" class="oh-top-navbar__dropdown-link">View All Employees</a>
+                            </div>
+                            <div class="oh-top-navbar__dropdown-item">
+                                <a href="#" class="oh-top-navbar__dropdown-link">Add New Employee</a>
+                            </div>
+                            <div class="oh-top-navbar__dropdown-item">
+                                <a href="#" class="oh-top-navbar__dropdown-link">Employee Directory</a>
+                            </div>
+                            <div class="oh-top-navbar__dropdown-item">
+                                <a href="#" class="oh-top-navbar__dropdown-link">Performance Reviews</a>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <!-- Attendance -->
+                    <li class="oh-top-navbar__main-menu-item">
+                        <a href="#" class="oh-top-navbar__main-menu-link">
+                            <i class="oh-top-navbar__menu-icon material-icons">schedule</i>
+                            Attendance
+                        </a>
+                        <!-- Dropdown Menu -->
+                        <div class="oh-top-navbar__dropdown-menu">
+                            <div class="oh-top-navbar__dropdown-item">
+                                <a href="#" class="oh-top-navbar__dropdown-link">Clock In/Out</a>
+                            </div>
+                            <div class="oh-top-navbar__dropdown-item">
+                                <a href="#" class="oh-top-navbar__dropdown-link">Attendance Report</a>
+                            </div>
+                            <div class="oh-top-navbar__dropdown-item">
+                                <a href="#" class="oh-top-navbar__dropdown-link">Leave Management</a>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <!-- Payroll -->
+                    <li class="oh-top-navbar__main-menu-item">
+                        <a href="#" class="oh-top-navbar__main-menu-link">
+                            <i class="oh-top-navbar__menu-icon material-icons">account_balance_wallet</i>
+                            Payroll
+                        </a>
+                        <!-- Dropdown Menu -->
+                        <div class="oh-top-navbar__dropdown-menu">
+                            <div class="oh-top-navbar__dropdown-item">
+                                <a href="#" class="oh-top-navbar__dropdown-link">Salary Management</a>
+                            </div>
+                            <div class="oh-top-navbar__dropdown-item">
+                                <a href="#" class="oh-top-navbar__dropdown-link">Payroll Reports</a>
+                            </div>
+                            <div class="oh-top-navbar__dropdown-item">
+                                <a href="#" class="oh-top-navbar__dropdown-link">Tax Information</a>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <!-- Reports -->
+                    <li class="oh-top-navbar__main-menu-item">
+                        <a href="#" class="oh-top-navbar__main-menu-link">
+                            <i class="oh-top-navbar__menu-icon material-icons">assessment</i>
+                            Reports
+                        </a>
+                        <!-- Dropdown Menu -->
+                        <div class="oh-top-navbar__dropdown-menu">
+                            <div class="oh-top-navbar__dropdown-item">
+                                <a href="#" class="oh-top-navbar__dropdown-link">HR Analytics</a>
+                            </div>
+                            <div class="oh-top-navbar__dropdown-item">
+                                <a href="#" class="oh-top-navbar__dropdown-link">Employee Reports</a>
+                            </div>
+                            <div class="oh-top-navbar__dropdown-item">
+                                <a href="#" class="oh-top-navbar__dropdown-link">Custom Reports</a>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <!-- Settings -->
+                    <li class="oh-top-navbar__main-menu-item">
+                        <a href="#" class="oh-top-navbar__main-menu-link">
+                            <i class="oh-top-navbar__menu-icon material-icons">settings</i>
+                            Settings
+                        </a>
+                        <!-- Dropdown Menu -->
+                        <div class="oh-top-navbar__dropdown-menu">
+                            <div class="oh-top-navbar__dropdown-item">
+                                <a href="#" class="oh-top-navbar__dropdown-link">Company Settings</a>
+                            </div>
+                            <div class="oh-top-navbar__dropdown-item">
+                                <a href="#" class="oh-top-navbar__dropdown-link">User Management</a>
+                            </div>
+                            <div class="oh-top-navbar__dropdown-item">
+                                <a href="#" class="oh-top-navbar__dropdown-link">System Preferences</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Right Section - Actions and User -->
+            <div class="oh-top-navbar__right-section">
+                <!-- Clock In/Out Button -->
+                <a href="#" class="oh-top-navbar__clock">
+                    <i class="oh-top-navbar__clock-icon material-icons">access_time</i>
+                    <span class="oh-top-navbar__clock-text">Clock In</span>
+                </a>
+                
+                <!-- Notifications -->
+                <a href="#" class="oh-top-navbar__notification-link">
+                    <i class="oh-top-navbar__icon material-icons">notifications</i>
+                    <!-- Notification Badge -->
+                    <span class="oh-top-navbar__notification-badge">3</span>
+                </a>
+                
+                <!-- User Profile -->
+                <div class="oh-top-navbar__user-info">
+                    <div class="oh-top-navbar__user-photo">
+                        <img src="path/to/user-avatar.jpg" alt="User Avatar" class="oh-top-navbar__user-image">
+                    </div>
+                    <span class="oh-top-navbar__user-name">John Doe</span>
+                    
+                    <!-- User Dropdown Menu -->
+                    <div class="oh-top-navbar__user-dropdown">
+                        <div class="oh-top-navbar__user-dropdown-item">
+                            <a href="#" class="oh-top-navbar__user-dropdown-link">My Profile</a>
+                        </div>
+                        <div class="oh-top-navbar__user-dropdown-item">
+                            <a href="#" class="oh-top-navbar__user-dropdown-link">Account Settings</a>
+                        </div>
+                        <div class="oh-top-navbar__user-dropdown-item">
+                            <a href="#" class="oh-top-navbar__user-dropdown-link">Help & Support</a>
+                        </div>
+                        <div class="oh-top-navbar__user-dropdown-item">
+                            <a href="#" class="oh-top-navbar__user-dropdown-link">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Mobile Navigation Menu -->
+    <div class="oh-top-navbar__mobile-menu" id="mobileMenu">
+        <ul class="oh-top-navbar__mobile-menu-list">
+            <li class="oh-top-navbar__mobile-menu-item">
+                <a href="#" class="oh-top-navbar__mobile-menu-link oh-top-navbar__mobile-menu-link--active">
+                    <i class="material-icons">dashboard</i> Dashboard
+                </a>
+            </li>
+            <li class="oh-top-navbar__mobile-menu-item">
+                <a href="#" class="oh-top-navbar__mobile-menu-link">
+                    <i class="material-icons">people</i> Employees
+                </a>
+            </li>
+            <li class="oh-top-navbar__mobile-menu-item">
+                <a href="#" class="oh-top-navbar__mobile-menu-link">
+                    <i class="material-icons">schedule</i> Attendance
+                </a>
+            </li>
+            <li class="oh-top-navbar__mobile-menu-item">
+                <a href="#" class="oh-top-navbar__mobile-menu-link">
+                    <i class="material-icons">account_balance_wallet</i> Payroll
+                </a>
+            </li>
+            <li class="oh-top-navbar__mobile-menu-item">
+                <a href="#" class="oh-top-navbar__mobile-menu-link">
+                    <i class="material-icons">assessment</i> Reports
+                </a>
+            </li>
+            <li class="oh-top-navbar__mobile-menu-item">
+                <a href="#" class="oh-top-navbar__mobile-menu-link">
+                    <i class="material-icons">settings</i> Settings
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- Main Content Area -->
+    <main id="main">
+        <div class="container">
+            <h1>Welcome to Your Employee Portal</h1>
+            <p>This is your main content area. The navigation is now at the top instead of the left side.</p>
+            
+            <!-- Your existing content goes here -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Quick Actions</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Your dashboard content here...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Recent Activity</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Your recent activity content here...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- JavaScript for Mobile Menu Toggle -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            mobileMenuToggle.addEventListener('click', function() {
+                mobileMenu.classList.toggle('oh-top-navbar__mobile-menu--open');
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!mobileMenuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+                    mobileMenu.classList.remove('oh-top-navbar__mobile-menu--open');
+                }
+            });
+            
+            // Close mobile menu when clicking on a menu item
+            const mobileMenuLinks = mobileMenu.querySelectorAll('.oh-top-navbar__mobile-menu-link');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.remove('oh-top-navbar__mobile-menu--open');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

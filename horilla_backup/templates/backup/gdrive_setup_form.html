@@ -1,6 +1,20 @@
 {% extends "settings.html" %}
 {% block settings %}
 {% load i18n %}
+
+<!-- Database Information Alert -->
+{% if not automated_backup_supported %}
+<div class="oh-wrapper">
+    <div class="oh-alert-container">
+        <div class="oh-alert oh-alert--animated oh-alert--warning">
+            <ion-icon name="information-circle-outline" class="me-2"></ion-icon>
+            <strong>{% trans "Database Notice:" %}</strong>
+            {% trans "You are using a" %} <strong>{{ db_vendor|upper }}</strong> {% trans "database. Automated Google Drive backup is only supported for PostgreSQL databases, but you can still use the instant backup feature below." %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
 {% if form.errors %}
 <!-- form errors  -->
 <div class="oh-wrapper">
@@ -13,20 +27,83 @@
     </div>
 </div>
 {% endif %}
-<form method="post" action="{% url 'gdrive' %}" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{form.as_p}}
- </form>
+
+<!-- Instant Backup Section -->
+<div class="oh-card p-4 mb-4">
+    <div class="oh-card__header">
+        <h3 class="oh-card__title">
+            <ion-icon name="flash-outline" class="me-2"></ion-icon>
+            {% trans "Instant Backup" %}
+        </h3>
+    </div>
+    <div class="oh-card__body">
+        <div class="row">
+            <div class="col-md-8">
+                <p class="text-muted mb-3">
+                    {% trans "Create an immediate backup of your database and download it instantly. This backup will be in SQL format for easy restoration." %}
+                </p>
+                <div class="alert alert-info">
+                    <ion-icon name="information-circle-outline" class="me-2"></ion-icon>
+                    <strong>{% trans "Supported Databases:" %}</strong>
+                    <ul class="mb-0 mt-2">
+                        <li>{% trans "PostgreSQL - SQL format backup" %}</li>
+                        <li>{% trans "SQLite - Database file copy" %}</li>
+                        <li>{% trans "MySQL - SQL format backup" %}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4 text-center">
+                <a href="{% url 'gdrive_instant_backup' %}" class="oh-btn oh-btn--primary oh-btn--lg" id="instantBackupBtn" onclick="showBackupLoading()">
+                    <ion-icon name="download-outline" class="me-2"></ion-icon>
+                    <span id="backupBtnText">{% trans "Download SQL Backup Now" %}</span>
+                </a>
+                <p class="text-muted mt-2 small">
+                    {% trans "Click to start immediate backup" %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Google Drive Setup Form -->
+<div class="oh-card p-4">
+    <div class="oh-card__header">
+        <h3 class="oh-card__title">
+            <ion-icon name="cloud-upload-outline" class="me-2"></ion-icon>
+            {% trans "Google Drive Backup Setup" %}
+        </h3>
+    </div>
+    <div class="oh-card__body">
+        {% if not automated_backup_supported %}
+        <div class="alert alert-warning mb-3">
+            <ion-icon name="warning-outline" class="me-2"></ion-icon>
+            <strong>{% trans "Automated Backup Limitation:" %}</strong>
+            {% trans "Automated Google Drive backup scheduling is only available for PostgreSQL databases. You can still configure the settings below for manual backups." %}
+        </div>
+        {% endif %}
+        
+        <form method="post" action="{% url 'gdrive' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.as_p}}
+        </form>
+    </div>
+</div>
 
  <script>
     $(document).ready(function() {
 
         $('.oh-payslip__header').append(`<div class="d-flex">
             {% if show %}
-            {% if active %}
-            <a class="oh-btn oh-btn--danger mr-2" href="{% url 'gdrive_start_stop' %}" title="Stop">Stop</a>
+            {% if automated_backup_supported %}
+                {% if active %}
+                <a class="oh-btn oh-btn--danger mr-2" href="{% url 'gdrive_start_stop' %}" title="Stop">Stop</a>
+                {% else %}
+                <a class="oh-btn oh-btn--success mr-2" href="{% url 'gdrive_start_stop' %}" title="Start">Start</a>
+                {% endif %}
             {% else %}
-            <a class="oh-btn oh-btn--success mr-2" href="{% url 'gdrive_start_stop' %}" title="Start">Start</a>
+                <div class="oh-btn oh-btn--secondary mr-2" disabled title="{% trans 'Automated backup not supported for this database' %}">
+                    {% trans "Automated Backup Not Available" %}
+                </div>
             {% endif %}
             <a class="oh-btn oh-btn--danger-outline" href="{% url 'gdrive_delete' %}" title="Remove">
                 <ion-icon name="trash-outline" role="img" class="md hydrated" aria-label="trash outline"></ion-icon>
@@ -62,6 +139,29 @@
             }
         });
     });
+</script>
+
+<script>
+    // Function to show loading state for instant backup
+    function showBackupLoading() {
+        const btn = document.getElementById('instantBackupBtn');
+        const btnText = document.getElementById('backupBtnText');
+        const icon = btn.querySelector('ion-icon');
+        
+        // Disable button and show loading state
+        btn.disabled = true;
+        btn.classList.add('oh-btn--loading');
+        btnText.textContent = '{% trans "Creating Backup..." %}';
+        icon.name = 'hourglass-outline';
+        
+        // Re-enable button after a delay (in case of errors)
+        setTimeout(() => {
+            btn.disabled = false;
+            btn.classList.remove('oh-btn--loading');
+            btnText.textContent = '{% trans "Download SQL Backup Now" %}';
+            icon.name = 'download-outline';
+        }, 30000); // 30 seconds timeout
+    }
 </script>
 
 {% endblock settings %}

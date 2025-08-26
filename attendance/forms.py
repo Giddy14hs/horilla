@@ -594,6 +594,23 @@ class AttendanceRequestForm(BaseModelForm):
                 )
             kwargs["initial"] = initial
         super().__init__(*args, **kwargs)
+        # Filter options to active items for clarity
+        try:
+            from base.models import EmployeeShift, WorkType
+            if "shift_id" in self.fields:
+                qs = EmployeeShift.objects.filter(is_active=True)
+                self.fields["shift_id"].queryset = qs
+                if not qs.exists():
+                    self.fields["shift_id"].required = False
+                    self.fields["shift_id"].widget = forms.HiddenInput()
+            if "work_type_id" in self.fields:
+                qs = WorkType.objects.filter(is_active=True)
+                self.fields["work_type_id"].queryset = qs
+                if not qs.exists():
+                    self.fields["work_type_id"].required = False
+                    self.fields["work_type_id"].widget = forms.HiddenInput()
+        except Exception:
+            pass
         self.fields["attendance_clock_out_date"].required = False
         self.fields["attendance_clock_out"].required = False
         self.fields["shift_id"].widget.attrs.update(
@@ -605,6 +622,26 @@ class AttendanceRequestForm(BaseModelForm):
                 "hx-get": "/attendance/update-fields-based-shift",
             }
         )
+        # Make shift/work type optional if there are no available records
+        try:
+            if "shift_id" in self.fields and not self.fields["shift_id"].queryset.exists():
+                self.fields["shift_id"].required = False
+                # Provide a helpful empty label
+                if hasattr(self.fields["shift_id"], "empty_label"):
+                    self.fields["shift_id"].empty_label = _("No shifts available")
+        except Exception:
+            # If queryset is not available for any reason, keep field optional to avoid blocking the form
+            if "shift_id" in self.fields:
+                self.fields["shift_id"].required = False
+
+        try:
+            if "work_type_id" in self.fields and not self.fields["work_type_id"].queryset.exists():
+                self.fields["work_type_id"].required = False
+                if hasattr(self.fields["work_type_id"], "empty_label"):
+                    self.fields["work_type_id"].empty_label = _("No work types available")
+        except Exception:
+            if "work_type_id" in self.fields:
+                self.fields["work_type_id"].required = False
         for field in [
             "attendance_clock_in_date",
             "attendance_clock_in",

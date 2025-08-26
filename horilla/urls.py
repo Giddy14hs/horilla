@@ -40,6 +40,7 @@ urlpatterns = [
     path("", include("helpdesk.urls")),
     path("", include("horilla_backup.urls")),
     path("employee/", include("employee.urls")),
+    path("", include("offboarding.urls")),
     path("horilla-widget/", include("horilla_widgets.urls")),
     re_path(
         "^inbox/notifications/", include(notifications.urls, namespace="notifications")

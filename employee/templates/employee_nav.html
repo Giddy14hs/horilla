@@ -126,12 +126,15 @@
                                     <b class="search_text"></b>
                                 </a>
                             </li>
+                            {% if has_employee_shifts %}
                             <li>
                                 <a href="#" onclick="$('[name=search_field]').val('shift'); $('.filterButton')[0].click()">
                                     {% trans "Search" %} <b>{% trans "Shift" %}</b> {% trans "for:" %}
                                     <b class="search_text"></b>
                                 </a>
                             </li>
+                            {% endif %}
+                            {% if has_work_types %}
                             <li>
                                 <a href="#"
                                     onclick="$('[name=search_field]').val('work_type'); $('.filterButton')[0].click()">
@@ -139,6 +142,7 @@
                                     <b class="search_text"></b>
                                 </a>
                             </li>
+                            {% endif %}
                             <li>
                                 <a href="#"
                                     onclick="$('[name=search_field]').val('company'); $('.filterButton')[0].click()">

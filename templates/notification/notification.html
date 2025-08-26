@@ -53,7 +53,7 @@
 </div>
 
 <script>
-    var staticUrl = $("#statiUrl").attr("data-url");
+    var staticUrl = $("#staticUrl").attr("data-url");
     var notification_sound = {{request.user.employee_get.notification_sound.sound_enabled|yesno:"true,false"}};
     function fill_notification_badge(data) {
         var badges = document.getElementsByClassName(notify_badge_class);
